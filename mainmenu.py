@@ -17,14 +17,8 @@ while True:
         hit = False
         firstswing = True
         
-        strikes = 0
+        strikes, runs, runner, singles, doubles, homeruns, hit_type = 0, 0, 0, 0, 0, 0, 0
         start = False
-        runs = 0
-        runner = 0
-        singles = 0
-        doubles = 0
-        homeruns = 0
-        hit_type = 0
         ballx = 265
         bally = 100
         batx = 260

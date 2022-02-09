@@ -2,8 +2,6 @@
 import urllib, requests, os, zipfile
 folderpath = os.getcwd()
 
-# check updates
-
 try: 
     response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases/latest")
     latestversion = response.json()["tag_name"].strip("v")

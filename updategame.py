@@ -13,16 +13,32 @@ except Exception as e:
     internet = False
 
 if str(version) != str(latestversion):
-    print("New update, restart game after download finishes")
+    print("New update, restart game after download finishes   " + str(version) + " -> " + str(latestversion))
     print("downloading...")
     url = "https://github.com/wowbaseballgamesocool/baseballgame/releases/download/" + str(latestversion) + "//Baseball.Game.zip"
-    urllib.request.urlretrieve(url, filename = folderpath + r"//Baseball.Game.zip")
+    try:
+        urllib.request.urlretrieve(url, filename = folderpath + r"//Baseball.Game.zip")
+    except: ConnectionAbortedError: print("Dont change your internet while file is downloading")
+    import zipfile
     with zipfile.ZipFile(folderpath + "\\Baseball.Game.zip", 'r') as zip_ref:
         os.rename(folderpath + "\\Baseball_game.exe", folderpath + "\\gamefiles\\Old_Baseball_game.exe")
-        zip_ref.extractall(folderpath)
+        
+        zip_ref.extractall(folderpath + "\\gamefiles\\updateunpack")
         zip_ref.close()
-    #os.remove(folderpath + "\\gamefiles\\Old_Baseball_game.exe")
     os.remove(folderpath + "\\Baseball.Game.zip")
+    
+    
+    os.rename(folderpath + "\\gamefiles\\updateunpack\\Baseball_game.exe", folderpath + "\\Baseball_game.exe")
+    os.remove(folderpath + "\\gamefiles\\audio\\batsound.mp3")
+    os.removedirs(folderpath + "\\gamefiles\\audio")
+    os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\audio", folderpath + "\\gamefiles\\audio")
+   
+    shutil.rmtree(folderpath + "\\gamefiles\\assets")
+    shutil.move(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\assets", folderpath + "\\gamefiles\\assets")
+    
+    
+    #os.remove(folderpath + "\\gamefiles\\Old_Baseball_game.exe")
+    
     exit()
 else: 
     if internet == True:

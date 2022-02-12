@@ -1,8 +1,5 @@
-# Note: this code is very messy
-
 while settingsback == False:
             
-
 
 
 
@@ -14,11 +11,6 @@ while settingsback == False:
             if menuplace == 2:
                 screen.blit(ball_settings, (145, 70))
 
-
-            #try:
-            #if True: #using this instead might crash
-            #volume = round(volume, 1)
-            #sfxvolume = round(sfxvolume, 1)
             settingstitle = big_font.render("Settings", True, black)
             screen.blit(settingstitle, [dis_width - 300, dis_height - 395])
             mesg11 = med_font.render("Volume      " + str(volume), True, black)
@@ -26,22 +18,11 @@ while settingsback == False:
             mesg12 = med_font.render("Sfx Volume      " + str(sfxvolume), True, black)
             screen.blit(mesg12, [dis_width - 595, dis_height - 320])
             
-            
-                #try:
+
                 
             volume = round(volume, 1)
             sfxvolume = round(sfxvolume, 1)
-            #with open(folderpath + "//gamefiles//settings.json", "r") as savesettings:
-                #jsonfile = savesettings.read()
-                
-                #savesettings.close()
-            #jsonfile = json.loads(jsonfile)
-            
 
-            
-                
-        #except:
-            #print("skipped crash"); pass
 
 
 
@@ -53,8 +34,6 @@ while settingsback == False:
                 if event.type == pygame.QUIT:
                     exit()
                 if event.type == pygame.KEYDOWN:
-                    #print(menuplace)
-                    #print("volume " + str(volume))
                     if event.key == pygame.K_UP:
                         menuplace -= 1
                         if menuplace <= 0:
@@ -63,14 +42,11 @@ while settingsback == False:
                         menuplace += 1
                         if menuplace >= 3:
                             menuplace = 1
-                    #volume = int(volume)
-                    #sfxvolume = int(sfxvolume)
                     if event.key == pygame.K_RIGHT:
                         
                         if menuplace == 1:
-                            #print(volume)
                             volume += 0.1
-                            #print(volume)
+
                             if volume > 1.0:
                                 volume = 1.0
                             mixer.music.set_volume(volume)
@@ -99,18 +75,13 @@ while settingsback == False:
                         menuplace = 2
                         start = False
                         try:
-                    #if True:
                             with open(folderpath + "//gamefiles//settings.json", "r") as settings:
                                 jsonfile = settings.read()
                                 settings.close()
                             jsonfile = json.loads(jsonfile)
                             jsonfile["settings"]["volume"] = volume
                             jsonfile["settings"]["sfxvolume"] = sfxvolume
-                            #sfxvolume = jsonfile["settings"]["sfxvolume"]
-                            #print(jsonfile["settings"]["sfxvolume"])
-                            #print(jsonfile["settings"]["volume"])
                             sfxvolume = float(sfxvolume)
-                            #volume = round(float(jsonfile["settings"]["volume"]), 1)
                             with open(folderpath + "\\gamefiles\\settings.json", "w") as savesettings:
                 
                                 savesettings.write(json.dumps(jsonfile))

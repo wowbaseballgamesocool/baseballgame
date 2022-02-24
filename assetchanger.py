@@ -1,5 +1,5 @@
 if event.key == pygame.K_SPACE and menuplace == 4:
-          battlepass = False  		#bruh indenting
+          asset = False  		#bruh indenting
 					screen.fill(white)
 					balllist = ["ball", "ball"]
 					fieldlist = ["field", "snowfield", "sandfield"]
@@ -11,7 +11,7 @@ if event.key == pygame.K_SPACE and menuplace == 4:
 					start = False
 					optionsmenu = False
 
-		while battlepass == False:
+		while asset == False:
 			
 
 			if balllistnumber > len(balllist) - 1:
@@ -93,7 +93,7 @@ if event.key == pygame.K_SPACE and menuplace == 4:
 
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_SPACE:
-						battlepass = True
+						asset = True
 						optionsmenu = True
 						menuplace = 3
 				if event.type == pygame.QUIT:

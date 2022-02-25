@@ -1,3 +1,6 @@
+#Note: settings was removed in 1.2
+
+
 while settingsback == False:
             
 

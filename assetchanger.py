@@ -1,5 +1,5 @@
-if event.key == pygame.K_SPACE and menuplace == 4:
-          asset = False  		#bruh indenting
+				if event.key == pygame.K_SPACE and menuplace == 4:
+          				asset = False
 					screen.fill(white)
 					balllist = ["ball", "ball"]
 					fieldlist = ["field", "snowfield", "sandfield"]

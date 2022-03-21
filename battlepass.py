@@ -83,7 +83,7 @@
 					if event.key == pygame.K_ESCAPE: battlepass = True
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 					if rightrect.collidepoint(event.pos):
-						if page < 5: page += 1 # max. 10 l8r
+						if page < 5: page += 1 # max. 10 later
 					if leftrect.collidepoint(event.pos):
 						if page > 1: page -= 1
 					

@@ -45,12 +45,7 @@ if internet == True:
 		os.rename(folderpath + "\\gamefiles\\updateunpack\\Baseball_game.exe", folderpath + "\\Baseball_game.exe")
 		if os.path.exists(folderpath + "\\gamefiles\\save.txt") == False:
 			os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\save.txt", folderpath + "\\gamefiles\\save.txt")
-		if os.path.exists(folderpath + "\\gamefiles\\customballs.txt") == False:
-			os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\customballs.txt", folderpath + "\\gamefiles\\customballs.txt")
-		if os.path.exists(folderpath + "\\gamefiles\\custombats.txt") == False:
-			os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\custombats.txt", folderpath + "\\gamefiles\\custombats.txt")
-		if os.path.exists(folderpath + "\\gamefiles\\customfields.txt") == False:
-			os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\customfields.txt", folderpath + "\\gamefiles\\customfields.txt")
+		
 
 		
 		shutil.rmtree(folderpath + "\\gamefiles\\audio")

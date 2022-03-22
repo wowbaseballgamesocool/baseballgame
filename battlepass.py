@@ -1,4 +1,12 @@
-		while battlepass == False:
+forplayingscoring = 15
+derbyhomerunsscoring = 3.2
+homerunsscoring = 2.8
+singlesscoring = 1.6
+doublesscoring = 2.4	
+	
+	
+	
+	while battlepass == False:
 			screen.fill(white)
 			for i in range(1, 5):
 				

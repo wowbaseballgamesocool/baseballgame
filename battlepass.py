@@ -61,6 +61,10 @@ doublesscoring = 2.4
 					hockeybat = pygame.image.load('gamefiles/assets/bats/hockeybat.png').convert_alpha()
 					screen.blit(pygame.transform.scale(hockeybat, (45, 120)), [-20 + i * 115, 70])
 				
+				if a == 14:
+					
+					waterfield = pygame.image.load('gamefiles/assets/fields/waterfield.png').convert_alpha()
+					screen.blit(pygame.transform.scale(waterfield, (90, 50)), [-35 + i * 115, 70])
 				
 				
 				

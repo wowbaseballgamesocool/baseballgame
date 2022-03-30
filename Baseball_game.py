@@ -461,7 +461,7 @@ while True:
 					
 		
 	
-			else:
+			else:	# might have to move this error text if stats/settings would go here
 				if ratelimit:
 					updateinfo = small_font.render("API rate limit exceeded (Try again later)", True, black)
 					screen.blit(updateinfo, [0, dis_height - 45])
@@ -687,7 +687,7 @@ while True:
 				mesg = font_style.render("Foul!", True, red)
 				screen.blit(mesg, [dis_width / 6, dis_height / 3])
 				
-		
+
 			bally = 100
 			ballx = 265
 			ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha() # refresh ball cause it messed up
@@ -759,7 +759,7 @@ while True:
 				ballx += 0.06
 			
 				
-		
+
 			
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -971,7 +971,7 @@ while True:
 				fpslist.append(fps)
 				fps = 0
 			if event.type == updateevent: 
-				pygame.mouse.set_visible(False) #########
+				pygame.mouse.set_visible(False)
 				pygame.display.set_caption('Baseball Game  -- Derby   ' + str(seconds) + "   " + str(homeruns) + " hrs")
 			if event.type == pygame.QUIT:
 				
@@ -1314,7 +1314,7 @@ while True:
 					ball_display = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_display = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
 
-					#[ball, bat, field, xp]
+					
 
 					if balllistnumber > len(balllist) - 1:
 						balllistnumber = 0
@@ -1328,20 +1328,11 @@ while True:
 
 
 					data = opensave()
-					#if data == "": data = "[0, 0, 0, 0]"
+					
 
 					
-					#data[0] = balllistnumber
-					#data[1] = batlistnumber
-					#data[2] = fieldlistnumber
-					#try:
 					save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
-						#with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-						#	data = str(data)
-						#	save.write(str(base64.b64encode(data.encode("utf-8"))))
-						#	save.close()
-						#data = ast.literal_eval(data)
-					#except: pass
+					
 					ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
 					field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
@@ -1366,6 +1357,7 @@ while True:
 		#xp = 0
 		while battlepass == False:
 			screen.fill(white)
+			screen.blit(optionsmenustatsback_sprite, (-50, 50))
 			for i in range(1, 5):
 				
 				a = page * 4 + i - 4

@@ -1438,6 +1438,7 @@ while True:
 			screen.blit(left_arrow, [15, 300])
 			rightrect = pygame.Rect(500, 300, 100, 100)
 			leftrect = pygame.Rect(15, 300, 100, 100)
+			backrect = pygame.Rect(360, 265, 110, 55)
 
 
 
@@ -1445,6 +1446,8 @@ while True:
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_ESCAPE: battlepass = True
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					if backrect.collidepoint(event.pos):
+						battlepass = True
 					if rightrect.collidepoint(event.pos):
 						if page < 5: page += 1 # max. 10 later
 					if leftrect.collidepoint(event.pos):

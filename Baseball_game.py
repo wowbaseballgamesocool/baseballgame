@@ -27,7 +27,8 @@ def play(file, volume):
 	mixer.music.unload()
 
 def give(asset, list, level, unlocktier):
-	if level >= unlocktier: if asset not in list: list.append(asset)
+	if level >= unlocktier: 
+		if asset not in list: list.append(asset)
 
 
 
@@ -69,10 +70,6 @@ def save(ball, bat, field, xp, balllist, batlist, fieldlist):
 	
 	
 	
-		
-		#data = base64.b64decode(data)
-		#data = str(data, "utf-8")
-		#data = ast.literal_eval(data)
 		return
 
 
@@ -86,9 +83,7 @@ fieldlist = ast.literal_eval(str(fieldlist))
 
 
 
-#balllist = ["ball", "christmasball", "starball"]
-#fieldlist = ["field", "snowfield", "sandfield"]
-#batlist = ["bat", "axebat", "coolbat", "hammerbat", "hockeybat"]
+
 
 splashmessage = random.choice([
 								"Battle Pass soon!",
@@ -96,7 +91,6 @@ splashmessage = random.choice([
 								"A line and a ball * and they dont even rotate",
 								"Better than real baseball!",
 								str(week) + " weeks!",
-								#'"Cryptoadult"',
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
@@ -363,23 +357,6 @@ while True:
 
 
 		screen.blit(menubg_sprite, (0, 0))
-		#if menuplace == 1:
-			
-			#screen.blit(menuplay_sprite, (0, 0))
-			
-		#elif menuplace == 2:
-			#screen.blit(menubg_sprite, (0, 0))
-			#screen.blit(menuderby_sprite, (0, 0))
-			
-		#elif menuplace == 3:
-			#screen.blit(menubg_sprite, (0, 0))
-			#screen.blit(menuoptions_sprite, (0, 0))
-			
-		#elif menuplace == 4:
-			#screen.blit(menubg_sprite, (0, 0))
-			#screen.blit(menuexit_sprite, (0, 0))
-			
-		#screen.blit(menubg_sprite, (0, 0))
 		
 
 
@@ -628,36 +605,7 @@ while True:
 
 
 		   
-			if False:
-				screen.blit(mesg, [1000, 1000])
-				runs = str(runs)
-				singles = str(singles)
-				doubles = str(doubles)
-				homeruns = str(homeruns)
-				highruns = str(highruns)
-				highsingles = str(highsingles)
-				highdoubles = str(highdoubles)
-				highhomeruns = str(highhomeruns)
-				mesg1 = font_style.render("Game Over!", True, black)
-				screen.blit(mesg1, [dis_width / 5, dis_height / 3])
-				mesg2 = small_font.render("Stats:", True, red)
-				screen.blit(mesg2, [dis_width / 6 - 90, dis_height / 3 + 20])
-				mesg3 = small_font.render("Runs : " + runs, True, red)
-				screen.blit(mesg3, [dis_width / 6 - 90, dis_height / 3 + 40])
-				mesg4 = small_font.render("Singles : " + singles, True, red)
-				screen.blit(mesg4, [dis_width / 6 - 90, dis_height / 3 + 50])
-				mesg5 = small_font.render("Doubles : " + doubles, True, red)
-				screen.blit(mesg5, [dis_width / 6 - 90, dis_height / 3 + 60])
-				mesg6 = small_font.render("Home Runs : " + homeruns, True, red)
-				screen.blit(mesg6, [dis_width / 6 - 90, dis_height / 3 + 70])
-				mesg7 = small_font.render("Best Runs : " + highruns, True, red)
-				screen.blit(mesg7, [dis_width / 6 - 90, dis_height / 3 + 90])
-				mesg8 = small_font.render("Best Singles : " + highsingles, True, red)
-				screen.blit(mesg8, [dis_width / 6 - 90, dis_height / 3 + 100])
-				mesg9 = small_font.render("Best Doubles : " + highdoubles, True, red)
-				screen.blit(mesg9, [dis_width / 6 - 90, dis_height / 3 + 110])
-				mesg10 = small_font.render("Best Home Runs : " + highhomeruns, True, red)
-				screen.blit(mesg10, [dis_width / 6 - 90, dis_height / 3 + 120])
+			
 			
 
 		screen.blit(mesg, [dis_width / 2 + 125, dis_height / 2])
@@ -1196,11 +1144,10 @@ while True:
 			screen.blit(settingstitle, [dis_width - 300, dis_height - 395])
 			mesg11 = med_font.render("Volume      " + str(volume), True, black)
 			screen.blit(mesg11, [dis_width - 595, dis_height - 370])
-			mesg12 = med_font.render("Sfx Volume      " + str(sfxvolume), True, black)
-			screen.blit(mesg12, [dis_width - 595, dis_height - 320])
 			
 			
-				#try:
+			
+			
 				
 			volume = round(volume, 1)
 			sfxvolume = round(sfxvolume, 1)
@@ -1225,14 +1172,13 @@ while True:
 						menuplace += 1
 						if menuplace >= 3:
 							menuplace = 1
-					#volume = int(volume)
-					#sfxvolume = int(sfxvolume)
+					
 					if event.key == pygame.K_RIGHT:
 						
 						if menuplace == 1:
-							#print(volume)
+							
 							volume += 0.1
-							#print(volume)
+							
 							if volume > 1.0:
 								volume = 1.0
 							mixer.music.set_volume(volume)
@@ -1295,9 +1241,7 @@ while True:
 
 			screen.blit(right_arrow, [375, 275])
 			screen.blit(left_arrow, [100, 275])
-			#try:
-				#ball_display = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
-			#except: ball_display = pygame.image.load('gamefiles/assets/' + balllist[0] + '.png').convert_alpha()
+			
 			
 			
 			screen.blit(pygame.transform.scale(ball_display, (80, 80)), [240, 20])

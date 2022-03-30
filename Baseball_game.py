@@ -166,9 +166,9 @@ if internet == True:
 		shutil.rmtree(folderpath + "\\gamefiles\\audio")
 		
 		shutil.move(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\audio", folderpath + "\\gamefiles")
-                                
+
 		shutil.rmtree(folderpath + "\\gamefiles\\assets")
-		
+
 		shutil.move(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\assets", folderpath + "\\gamefiles")
 		
 		
@@ -1353,24 +1353,24 @@ while True:
 	
 		
 		
-		
+
 		#xp = 0
 		while battlepass == False:
 			screen.fill(white)
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
 			for i in range(1, 5):
-				
+
 				a = page * 4 + i - 4
-				
+
 				level = math.floor(xp / 100) + 1
 
 				# Giving is at start
-				
+
 
 				if a < level: screen.blit(battlepassboxpast, [-50 + i * 115, 50])
 				elif a > level: screen.blit(battlepassboxfuture, [-50 + i * 115, 50])
 				else: screen.blit(battlepassboxpresent, [-50 + i * 115, 50])
-				
+
 				if a == 2:
 					
 					snowfield = pygame.image.load('gamefiles/assets/fields/snowfield.png').convert_alpha()
@@ -1387,10 +1387,10 @@ while True:
 					screen.blit(pygame.transform.scale(sandfield, (90, 50)), [-35 + i * 115, 70])
 				
 				if a == 15:
-					
+
 					coolbat = pygame.image.load('gamefiles/assets/bats/coolbat.png').convert_alpha()
 					screen.blit(pygame.transform.scale(coolbat, (45, 120)), [-20 + i * 115, 70])
-				
+			
 				if a == 19:
 					
 					hammerbat = pygame.image.load('gamefiles/assets/bats/hammerbat.png').convert_alpha()

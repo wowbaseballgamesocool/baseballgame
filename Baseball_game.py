@@ -1013,15 +1013,6 @@ while True:
 							hit_type = 4
 							hit = True
 					
-					
-				
-				
-			
-				
-		
-			
-		
-		#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 		pygame.display.update()
 	while optionsmenu == True:
 		statsback = True
@@ -1043,9 +1034,6 @@ while True:
 			#pygame.draw.rect(screen,red,(battlepassrect))
 		for event in pygame.event.get():
 			
-			#if statsrect.collidepoint(pygame.mouse.get_pos()): menuplace = 1
-			#if settingsrect.collidepoint(pygame.mouse.get_pos()): menuplace = 2
-			#if backrect.collidepoint(pygame.mouse.get_pos()): menuplace = 3
 			
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				

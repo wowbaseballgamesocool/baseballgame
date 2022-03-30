@@ -16,7 +16,7 @@ forplayingscoring = 15
 derbyhomerunsscoring = 3.2
 homerunsscoring = 2.8
 singlesscoring = 1.6
-doublesscoring = 2.4
+doublesscoring = 2.2
 
 
 mixer.init()
@@ -27,8 +27,7 @@ def play(file, volume):
 	mixer.music.unload()
 
 def give(asset, list, level, unlocktier):
-	if level >= unlocktier:
-		if asset not in list: list.append(asset)
+	if level >= unlocktier: if asset not in list: list.append(asset)
 
 
 
@@ -103,7 +102,7 @@ splashmessage = random.choice([
 								"Why are you playing this?",
 								"sponsored by * the inability to spell gmae!"
 								#"Jones."
-								#"Switch Port?"
+								#"Switch Port?" # the 'rt?' part looks funny
 								#""
 								#""
 							])
@@ -212,7 +211,7 @@ volume = int(jsonfile["settings"]["volume"])
 
 
 data = opensave()
-#if data == "": data = "[0, 0, 0]"
+
 
 balllistnumber = data[0]
 batlistnumber = data[1]

@@ -446,7 +446,7 @@ while True:
 						for event in pygame.event.get():
 							if event.type == pygame.QUIT: exit()
 							if event.type == pygame.MOUSEBUTTONDOWN:
-								#print(event.button / 2)
+								
 								
 								if event.button >= 4 and ".0" in str(event.button / 2):
 									releasenotescroll += 40
@@ -462,7 +462,7 @@ while True:
 					
 		
 	
-			else:	# might have to move this error text if stats/settings would go here
+			else:	# might have to move this error text if stats/settings were to go here
 				if ratelimit:
 					updateinfo = small_font.render("API rate limit exceeded (Try again later)", True, black)
 					screen.blit(updateinfo, [0, dis_height - 45])
@@ -729,8 +729,9 @@ while True:
 				if bally < 225:
 					ball_sprite = pygame.transform.scale(ball_sprite, (60, 60)) #size of ball
 					if bally < 155:
-						ball_sprite = pygame.transform.scale(ball_sprite, (10, 10)) #size of ball
+						ball_sprite = pygame.transform.scale(ball_sprite, (20, 20)) #size of ball
 						if bally < 135:
+							bally -= 0.04
 							ball_sprite = pygame.transform.scale(ball_sprite, (0, 0)) #size of ball
 			if hit_type == 4:
 
@@ -751,8 +752,9 @@ while True:
 				if bally < 225:
 					ball_sprite = pygame.transform.scale(ball_sprite, (60, 60)) #size of ball
 					if bally < 155:
-						ball_sprite = pygame.transform.scale(ball_sprite, (10, 10)) #size of ball
+						ball_sprite = pygame.transform.scale(ball_sprite, (20, 20)) #size of ball
 						if bally < 135:
+							bally -= 0.04
 							ball_sprite = pygame.transform.scale(ball_sprite, (0, 0)) #size of ball
 			if hit_type == 7:
 
@@ -777,7 +779,7 @@ while True:
 						firstswing = False
 						
 						bat_sprite = pygame.transform.rotate(bat_sprite, 150)
-					if bally >= 298 and bally <= 305:
+					if bally >= 298 and bally <= 304:
 						hit_type = 1
 						hit = True
 					if bally >= 277 and bally <= 297:
@@ -788,7 +790,7 @@ while True:
 						else:
 							hit_type = 2
 							hit = True
-					if bally >= 306 and bally <= 315:
+					if bally >= 305 and bally <= 318:
 						rand23 = random.randint(1,7)
 						if rand23 == 7:
 							
@@ -932,8 +934,9 @@ while True:
 				if bally < 225:
 					ball_sprite = pygame.transform.scale(ball_sprite, (60, 60)) #size of ball
 					if bally < 155:
-						ball_sprite = pygame.transform.scale(ball_sprite, (10, 10)) #size of ball
+						ball_sprite = pygame.transform.scale(ball_sprite, (20, 20)) #size of ball
 						if bally < 135:
+							bally -= 0.04
 							ball_sprite = pygame.transform.scale(ball_sprite, (0, 0)) #size of ball
 			if hit_type == 4:
 
@@ -954,8 +957,9 @@ while True:
 				if bally < 225:
 					ball_sprite = pygame.transform.scale(ball_sprite, (60, 60)) #size of ball
 					if bally < 155:
-						ball_sprite = pygame.transform.scale(ball_sprite, (10, 10)) #size of ball
+						ball_sprite = pygame.transform.scale(ball_sprite, (20, 20)) #size of ball
 						if bally < 135:
+							bally -= 0.04
 							ball_sprite = pygame.transform.scale(ball_sprite, (0, 0)) #size of ball
 			if hit_type == 7:
 				
@@ -988,7 +992,7 @@ while True:
 						firstswing = False
 						
 						bat_sprite = pygame.transform.rotate(bat_sprite, 150)
-					if bally >= 298 and bally <= 305:
+					if bally >= 298 and bally <= 304:
 						play("batsound.mp3", volume)
 						hit_type = 1
 						hit = True
@@ -1001,7 +1005,7 @@ while True:
 						else:
 							hit_type = 2
 							hit = True
-					if bally >= 306 and bally <= 315:
+					if bally >= 305 and bally <= 318:
 						play("batsound.mp3", volume)
 						rand23 = random.randint(1,7)
 						if rand23 == 7:

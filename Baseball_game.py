@@ -135,7 +135,7 @@ if internet == True:
 		from time import sleep
 		print("\nNew update   " + str(version) + " -> " + str(latestversion))
 		#print("Restart game if download takes too long")
-		sleep(1)
+		sleep(1.5)
 		print("downloading update...")
 		
 		url = "https://github.com/wowbaseballgamesocool/baseballgame/releases/download/" + str(latestversion) + "//Baseball.Game.zip"
@@ -384,8 +384,6 @@ while True:
 			if "*" in altaltsplashmessage:
 				splashmessage, altsplashmessage = altaltsplashmessage.split("*")
 				
-				#splashmessage, altsplashmessage = splashmessage
-				
 				altsplash_text = splash_font.render(altsplashmessage, True, yellow)
 				altsplash_text = pygame.transform.rotate(altsplash_text, 345)
 				screen.blit(altsplash_text, [310, 65])
@@ -415,7 +413,7 @@ while True:
 					
 					screen.blit(releasenotesbg, [0, 0])
 					screen.blit(releasenotesbg, [0, 0])
-					for i in range(0,2):
+					for i in range(0, 8):
 						updatelinecount = 0
 						updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
 
@@ -425,33 +423,36 @@ while True:
 
 						updateinfotitle = med_font.render(updatetitlething___, True, grey)
 						updateinfo = small_font.render(response.json()[i]["body"], True, black)
-
-						screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
-						if "\n" not in str(response.json()[i]["body"]):
+						if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
+							screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
+						if "\n" not in str(response.json()[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
 							screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
 							pushdownupdateinfo += 30
 						else:
-							a = str(response.json()[i]["body"])
-							b = r"\r\n"
-							try:
-								for b in a:
-									c = a.split("\r\n")
-									d = c[updatelinecount]
-									d = small_font.render(d, True, black)
-									screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
-									pushdownupdateinfo += 20
-									updatelinecount += 1
-							except: pass
+							
+								a = str(response.json()[i]["body"])
+								b = r"\r\n"
+								try:
+									for b in a:
+										c = a.split("\r\n")
+										d = c[updatelinecount]
+										d = small_font.render(d, True, black)
+										if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+											screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
+										pushdownupdateinfo += 20
+										updatelinecount += 1
+								except: pass
 						pushdownupdateinfo += 55
 						for event in pygame.event.get():
 							if event.type == pygame.QUIT: exit()
 							if event.type == pygame.MOUSEBUTTONDOWN:
-								if event.button != 4 and event.button != 5:
-									openreleasenotes = False
-								#if event.button == 4:
-								#	releasenotescroll += 40
-								#if event.button == 5:
-								#	releasenotescroll -= 40
+								#print(event.button / 2)
+								
+								if event.button >= 4 and ".0" in str(event.button / 2):
+									releasenotescroll += 40
+								elif event.button >= 5 and ".0" not in str(event.button / 2):
+									releasenotescroll -= 40
+								else: openreleasenotes = False
 							if event.type == pygame.KEYDOWN:
 								openreleasenotes = False
 						pygame.display.update()

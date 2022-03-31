@@ -972,7 +972,7 @@ while True:
 				fps = 0
 			if event.type == updateevent: 
 				pygame.mouse.set_visible(False)
-				pygame.display.set_caption('Baseball Game  -- Derby   ' + str(seconds) + "   " + str(homeruns) + " hrs")
+				#pygame.display.set_caption('Baseball Game  -- Derby   ' + str(seconds) + "   " + str(homeruns) + " hrs")
 			if event.type == pygame.QUIT:
 				
 				exit()

@@ -3,7 +3,7 @@ import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, da
 
 
 date = datetime.date.today(); year, week, __ = date.isocalendar(); week += 4
-if year == "2023": week = "__"
+if year == "2023": week += 52
 
 #from PIL import Image, ImageSequence
 from pygame import mixer
@@ -16,7 +16,7 @@ forplayingscoring = 15
 derbyhomerunsscoring = 3.2
 homerunsscoring = 2.8
 singlesscoring = 1.6
-doublesscoring = 2.2
+doublesscoring = 2.6
 
 
 mixer.init()
@@ -531,15 +531,15 @@ while True:
 			
 			if event.type == pygame.QUIT: exit()
 			if event.type == pygame.KEYDOWN:
-				
+
 				if event.key == pygame.K_ESCAPE:
 					exit()
 		pygame.display.update()
 	while startplay == True:
+
+
 		
-		
-		
-				
+
 		pygame.mouse.set_visible(False) #########
 		screen.blit(field_sprite, (0, 0))
 		
@@ -547,7 +547,7 @@ while True:
 		screen.blit(space2swing, [dis_width / 6 + 260, dis_height / 3 + 250])
 		screen.blit(ball_sprite, (ballx, bally))
 		screen.blit(bat_sprite, (batx, baty))
-		
+
 
 
 
@@ -562,7 +562,7 @@ while True:
 			screen.blit(field_sprite, (0, 0))
 			screen.blit(out3_sprite, (0, 370))
 			endtimer += 1
-			if endtimer >= 750: # 4500
+			if endtimer >= 775: # 4500
 				xp += math.floor(int(singles) * singlesscoring)
 				xp += math.floor(int(doubles) * doublesscoring)
 				xp += math.floor(int(homeruns) * homerunsscoring)
@@ -837,9 +837,9 @@ while True:
 		screen.blit(bat_sprite, (batx, baty))
 		if float(seconds) >= 60:
 			endtimer += 1
-			
+
 			if endtimer >= 170:
-				
+
 				startderby = False
 				start = False
 				for i in fpslist:
@@ -849,7 +849,7 @@ while True:
 				xp += math.floor(int(homeruns) * derbyhomerunsscoring)
 				xp += forplayingscoring
 				save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
-				
+
 				#print("Average FPS: " + str(round(averagefps, 0)))
 			#timertext = font_style.render(str(seconds), False, black)
 			timertext = font_style.render("60.00", True, black)
@@ -860,7 +860,7 @@ while True:
 					derbyh.close()
 					jsonfile = json.loads(jsonfile)
 				jsonfile["derby"]["homeruns"] = homeruns
-				
+
 				with open(folderpath + "\\gamefiles\\hderby.json", "w") as highscorehomeruns:
 					homeruns = str(homeruns)
 					highhomeruns = homeruns

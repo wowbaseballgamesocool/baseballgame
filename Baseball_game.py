@@ -43,7 +43,6 @@ def opensave():
 	if data == [0, 0, 0] or data == "[0, 0, 0]":
 		data = [0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
 	elif data != "" and data != None:
-		#print(len(data)%4)
 		data = data.strip("b''")
 		while len(data)%4 != 0: data += "="
 		
@@ -63,8 +62,7 @@ def save(ball, bat, field, xp, balllist, batlist, fieldlist):
 		
 		data = base64.b64encode(data.encode("utf-8"))
 		data = str(data, "utf-8")
-		#print(list)
-		#print(data)
+
 		
 		
 		save.write(data)
@@ -451,9 +449,9 @@ while True:
 								
 								
 								if event.button >= 4 and ".0" in str(event.button / 2):
-									releasenotescroll += 40
+									if releasenotescroll <= 50: releasenotescroll += 40; print("a")
 								elif event.button >= 5 and ".0" not in str(event.button / 2):
-									releasenotescroll -= 40
+									if releasenotescroll >= -950: releasenotescroll -= 40; print("b")
 								else: openreleasenotes = False
 							if event.type == pygame.KEYDOWN:
 								openreleasenotes = False

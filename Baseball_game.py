@@ -94,10 +94,10 @@ splashmessage = random.choice([
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
-								"sponsored by * the inability to spell gmae!"
+								"sponsored by * the inability to spell gmae!",
 								#"Jones."
 								#"Switch Port?" # the 'rt?' part looks funny
-								#""
+								"What were you expecting?"
 								#""
 							])
 

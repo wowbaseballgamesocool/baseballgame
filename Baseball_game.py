@@ -449,9 +449,9 @@ while True:
 								
 								
 								if event.button >= 4 and ".0" in str(event.button / 2):
-									if releasenotescroll <= 50: releasenotescroll += 40; print("a")
+									if releasenotescroll <= 50: releasenotescroll += 40
 								elif event.button >= 5 and ".0" not in str(event.button / 2):
-									if releasenotescroll >= -950: releasenotescroll -= 40; print("b")
+									if releasenotescroll >= -950: releasenotescroll -= 40
 								else: openreleasenotes = False
 							if event.type == pygame.KEYDOWN:
 								openreleasenotes = False

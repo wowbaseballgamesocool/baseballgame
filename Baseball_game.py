@@ -328,6 +328,7 @@ while True:
 		give("starball", balllist, level, 17)
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
+		give("roseball", balllist, level, 6)
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
 	except: pass
 	pygame.mouse.set_visible(True) #########
@@ -1398,6 +1399,11 @@ while True:
 					
 					starball = pygame.image.load('gamefiles/assets/balls/starball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(starball, (80, 80)), [-30 + i * 115, 70])
+				
+				if a == 6:
+					
+					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(roseball, (80, 80)), [-30 + i * 115, 70])
 				
 				if a == 12:
 					

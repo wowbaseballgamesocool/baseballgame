@@ -1040,7 +1040,8 @@ while True:
 			#pygame.draw.rect(screen,red,(battlepassrect))
 		for event in pygame.event.get():
 			
-			
+			if event.type == pygame.KEYDOWN: 
+				if event.key == pygame.K_ESCAPE: optionsmenu = False; start = False
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				
 				
@@ -1057,7 +1058,7 @@ while True:
 					balllist = ast.literal_eval(str(balllist))
 					batlist = ast.literal_eval(str(batlist))
 					fieldlist = ast.literal_eval(str(fieldlist))
-					#screen.fill(white)
+					
 					field_display = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
 					ball_display = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_display = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()

@@ -1120,6 +1120,7 @@ while True:
 				
 			
 				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE: statsback = True
 					if event.key == pygame.K_SPACE:
 						statsback = True
 					
@@ -1259,6 +1260,7 @@ while True:
 			backrect = pygame.Rect(480, 320, 100, 50)
 			
 			for event in pygame.event.get():
+
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				
 					if leftballrect.collidepoint(event.pos):
@@ -1334,6 +1336,7 @@ while True:
 					field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
 					bat_sprite = pygame.transform.scale(bat_sprite, (20, 70))
 				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE: asset = True; optionsmenu = True
 					if event.key == pygame.K_SPACE:
 						asset = True
 						optionsmenu = True

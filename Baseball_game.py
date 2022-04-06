@@ -23,10 +23,11 @@ doublesscoring = 2.6
 
 mixer.init()
 def play(file, volume):
-	mixer.music.load(folderpath + "//gamefiles//audio//" + file)
-	mixer.music.set_volume(volume)
-	mixer.music.play()
-	mixer.music.unload()
+	#mixer.music.load(folderpath + "//gamefiles//audio//" + file)
+	#mixer.music.set_volume(volume)
+	#mixer.music.play()
+	#mixer.music.unload()
+	pass
 
 def give(asset, list, level, unlocktier):
 	if level >= unlocktier: 
@@ -154,12 +155,7 @@ if internet == True:
 		os.rename(folderpath + "\\gamefiles\\updateunpack\\Baseball_game.exe", folderpath + "\\Baseball_game.exe")
 		if os.path.exists(folderpath + "\\gamefiles\\save.txt") == False:
 			os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\save.txt", folderpath + "\\gamefiles\\save.txt")
-		#if os.path.exists(folderpath + "\\gamefiles\\customballs.txt") == False:
-		#	os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\customballs.txt", folderpath + "\\gamefiles\\customballs.txt")
-		#if os.path.exists(folderpath + "\\gamefiles\\custombats.txt") == False:
-		#	os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\custombats.txt", folderpath + "\\gamefiles\\custombats.txt")
-		#if os.path.exists(folderpath + "\\gamefiles\\customfields.txt") == False:
-		#	os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\customfields.txt", folderpath + "\\gamefiles\\customfields.txt")
+
 
 		#shutil.move(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\audio", folderpath + "\\gamefiles\\audio")
 		#os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\assets", folderpath + "\\gamefiles\\assets")
@@ -505,6 +501,8 @@ while True:
 				
 				if exitrect.collidepoint(event.pos): exit()
 				if optionsrect.collidepoint(event.pos):
+					#screen = pygame.display.set_mode((650, 500))
+					#optionsmenu_sprite = pygame.transform.scale(optionsmenu_sprite, (650, 500))
 					play("batsound.mp3", volume)
 					pygame.display.set_caption('Baseball Game -- Options')
 					
@@ -1091,18 +1089,18 @@ while True:
 			jsonfile = json.loads(file)
 			highderbyhomeruns = str(jsonfile["derby"]["homeruns"])
 			
-			mesg7 = med_font.render("Best Runs : " + highruns, True, black)
-			screen.blit(mesg7, [dis_width - 595, dis_height - 395])
-			mesg8 = med_font.render("Best Singles : " + highsingles, True, black)
-			screen.blit(mesg8, [dis_width - 595, dis_height - 375])
-			mesg9 = med_font.render("Best Doubles : " + highdoubles, True, black)
-			screen.blit(mesg9, [dis_width - 595, dis_height - 355])
-			mesg10 = med_font.render("Best Home Runs : " + highhomeruns, True, black)
-			screen.blit(mesg10, [dis_width - 595, dis_height - 335])
-			mesg11 = big_font.render("Derby Scores", True, black)
-			screen.blit(mesg11, [dis_width - 300, dis_height - 395])
-			mesg12 = med_font.render("Best Home Runs : " + highderbyhomeruns, True, black)
-			screen.blit(mesg12, [dis_width - 290, dis_height - 355])
+			mesg = med_font.render("Best Runs : " + highruns, True, black)
+			screen.blit(mesg, [dis_width - 595, dis_height - 395])
+			mesg = med_font.render("Best Singles : " + highsingles, True, black)
+			screen.blit(mesg, [dis_width - 595, dis_height - 375])
+			mesg = med_font.render("Best Doubles : " + highdoubles, True, black)
+			screen.blit(mesg, [dis_width - 595, dis_height - 355])
+			mesg = med_font.render("Best Home Runs : " + highhomeruns, True, black)
+			screen.blit(mesg, [dis_width - 595, dis_height - 335])
+			mesg = big_font.render("Derby Scores", True, black)
+			screen.blit(mesg, [dis_width - 300, dis_height - 395])
+			mesg = med_font.render("Best Home Runs : " + highderbyhomeruns, True, black)
+			screen.blit(mesg, [dis_width - 290, dis_height - 355])
 		   
 			highderbyhomeruns = int(highderbyhomeruns)
 			

@@ -89,7 +89,7 @@ fieldlist = ast.literal_eval(str(fieldlist))
 splashmessage = random.choice([
 								"Battle Pass soon!",
 								"Now on PS4!",
-								"A line and a ball * and they dont even rotate",
+								"A line and a ball * and they dont even rotate!",
 								"Better than real baseball!",
 								str(week) + " weeks!",
 								"sponsored by Bayloadgs!",
@@ -489,14 +489,14 @@ while True:
 			#pygame.draw.rect(screen,red,(releaserect))
 		
 		for event in pygame.event.get():
-			if exitrect.collidepoint(pygame.mouse.get_pos()):
-				menuplace = 4
-			if optionsrect.collidepoint(pygame.mouse.get_pos()):
-				menuplace = 3
-			if derbyrect.collidepoint(pygame.mouse.get_pos()):
-				menuplace = 2
-			if playrect.collidepoint(pygame.mouse.get_pos()):
-				menuplace = 1
+			#if exitrect.collidepoint(pygame.mouse.get_pos()):
+			#	menuplace = 4
+			#if optionsrect.collidepoint(pygame.mouse.get_pos()):
+			#	menuplace = 3
+			#if derbyrect.collidepoint(pygame.mouse.get_pos()):
+			#	menuplace = 2
+			#if playrect.collidepoint(pygame.mouse.get_pos()):
+			#	menuplace = 1
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				
 				if exitrect.collidepoint(event.pos): exit()
@@ -508,7 +508,7 @@ while True:
 					
 					start = True
 					optionsmenu = True
-					menuplace = 1
+					#menuplace = 1
 				if derbyrect.collidepoint(event.pos):
 					play("batsound.mp3", volume)
 					pygame.display.set_caption('Baseball Game -- Derby')

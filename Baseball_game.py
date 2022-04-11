@@ -3,9 +3,9 @@ import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, da
 
 
 date = datetime.date.today(); year, week, __ = date.isocalendar(); week += 4
-if year != "2022":
-	for i in range(int(year) - 2022):
-		week += 52
+
+for i in range(year - 2022):
+	week += 52
 
 #from PIL import Image, ImageSequence
 from pygame import mixer

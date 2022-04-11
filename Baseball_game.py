@@ -87,7 +87,7 @@ fieldlist = ast.literal_eval(str(fieldlist))
 
 
 splashmessage = random.choice([
-								"Battle Pass soon!",
+								#"Battle Pass soon!",
 								"Now on PS4!",
 								"A line and a ball * and they dont even rotate!",
 								"Better than real baseball!",
@@ -99,6 +99,8 @@ splashmessage = random.choice([
 								#"Jones."
 								#"Switch Port?" # the 'rt?' part looks funny
 								"What were you expecting?"
+								#""
+								#""
 								#""
 							])
 

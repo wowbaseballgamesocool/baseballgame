@@ -1,9 +1,8 @@
 
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
 
-year, week, __ = datetime.date.today().isocalendar(); week += 4
-for i in range(year - 2022):
-	week += 52
+year, week, _ = datetime.date.today().isocalendar(); week += 4
+for i in range(year - 2022): week += 52
 
 
 #from PIL import Image, ImageSequence

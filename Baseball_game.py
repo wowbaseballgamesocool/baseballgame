@@ -1,12 +1,11 @@
-
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
 
-year, week, _ = datetime.date.today().isocalendar(); week += 4
+year, week, day = datetime.date.today().isocalendar(); week += 4
 for i in range(year - 2022): week += 52
+for i in range(day - 6): week += 1
 
 
 #from PIL import Image, ImageSequence
-from pygame import mixer
 folderpath = os.getcwd()
 version = "1.2.1"
 # make sure version is the same as github tag
@@ -18,8 +17,8 @@ homerunsscoring = 2.8
 singlesscoring = 1.6
 doublesscoring = 2.6
 
-
-mixer.init()
+#from pygame import mixer
+#mixer.init()
 def play(file, volume):
 	#mixer.music.load(folderpath + "//gamefiles//audio//" + file)
 	#mixer.music.set_volume(volume)
@@ -79,25 +78,26 @@ balllist = ast.literal_eval(str(balllist))
 batlist = ast.literal_eval(str(batlist))
 fieldlist = ast.literal_eval(str(fieldlist))
 
+if random.randint(0, 1) == 1: ABK = "+" + str(round(random.uniform(1.02, 4.24), 2)) + "%"
+else: ABK = "-" + str(round(random.uniform(2.64, 0.16), 2)) + "%"
 
-
-
+#ABKPRICE + "[" +  + random.randint() + "]"
 
 
 splashmessage = random.choice([
 								#"Battle Pass soon!",
 								"Now on PS4!",
 								"A line and a ball * and they dont even rotate!",
-								"Better than real baseball!",
-								str(week) + " weeks!",
+								#"Better than real baseball!",
+								#str(week) + " weeks!",
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
 								"sponsored by * the inability to spell gmae!",
 								#"Jones."
 								#"Switch Port?" # the 'rt?' part looks funny
-								"What were you expecting?"
-								#""
+								"What were you expecting?",
+								"ABK Stock " + ABK + "" 
 								#""
 								#""
 							])
@@ -370,14 +370,13 @@ while True:
 
 		if openreleasenotes == False:
 			if "*" in splashmessage: altaltsplashmessage = splashmessage
-			if splashsize >= 35:
+			if splashsize >= 32:
 				splashsizemode = 0
 			if splashsize <= 25:
 				splashsizemode = 1
-			if splashsizemode == 0: splashsize -= 1
-			if splashsizemode == 1: splashsize += 1
-
-			splash_font = pygame.font.SysFont("Mochiy Pop One", splashsize) # 45
+			if splashsizemode == 0: splashsize -= 0.85
+			if splashsizemode == 1: splashsize += 0.85
+			splash_font = pygame.font.SysFont("Mochiy Pop One", int(round(splashsize, 0))) # 45
 			if "*" in altaltsplashmessage:
 				splashmessage, altsplashmessage = altaltsplashmessage.split("*")
 				
@@ -410,7 +409,7 @@ while True:
 					
 					screen.blit(releasenotesbg, [0, 0])
 					screen.blit(releasenotesbg, [0, 0])
-					for i in range(0, 8):
+					for i in range(7):
 						updatelinecount = 0
 						updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
 

@@ -1169,19 +1169,19 @@ while True:
 							
 							if volume > 1.0:
 								volume = 1.0
-							mixer.music.set_volume(volume)
+							#mixer.music.set_volume(volume)
 						if menuplace == 2:
 							sfxvolume += 0.1
 							if sfxvolume > 1.0:
 								sfxvolume = 1.0
-							mixer.music.set_volume(volume)
+							#mixer.music.set_volume(volume)
 						
 					if event.key == pygame.K_LEFT:
 						if menuplace == 1:
 							volume -= 0.1
 						if volume < 0.0:
 							volume = 0.0
-						mixer.music.set_volume(volume)
+						#mixer.music.set_volume(volume)
 
 						if menuplace == 2:
 							sfxvolume -= 0.1

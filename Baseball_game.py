@@ -7,7 +7,7 @@ for i in range(day - 6): week += 1
 
 #from PIL import Image, ImageSequence
 folderpath = os.getcwd()
-version = "1.2.1"
+version = "1.3"
 # make sure version is the same as github tag
 
 
@@ -62,11 +62,8 @@ def save(ball, bat, field, xp, balllist, batlist, fieldlist):
 		data = str(data, "utf-8")
 
 		
-		
 		save.write(data)
 		save.close()
-	
-	
 	
 		return
 
@@ -81,7 +78,6 @@ fieldlist = ast.literal_eval(str(fieldlist))
 if random.randint(0, 1) == 1: ABK = "+" + str(round(random.uniform(1.02, 4.24), 2)) + "%"
 else: ABK = "-" + str(round(random.uniform(2.64, 0.16), 2)) + "%"
 
-#ABKPRICE + "[" +  + random.randint() + "]"
 
 
 splashmessage = random.choice([
@@ -97,7 +93,7 @@ splashmessage = random.choice([
 								#"Jones."
 								#"Switch Port?" # the 'rt?' part looks funny
 								"What were you expecting?",
-								"ABK Stock " + ABK + "" 
+								"ABK Stock " + ABK
 								#""
 								#""
 							])
@@ -142,7 +138,7 @@ if internet == True:
 		url = "https://github.com/wowbaseballgamesocool/baseballgame/releases/download/" + str(latestversion) + "//Baseball.Game.zip"
 		try:
 			urllib.request.urlretrieve(url, filename = folderpath + r"//Baseball.Game.zip")
-		except: ConnectionAbortedError: print("Dont change your internet while file is downloading")
+		except: ConnectionAbortedError: print("Don't change your internet while file is downloading")
 		import zipfile
 		with zipfile.ZipFile(folderpath + "\\Baseball.Game.zip", 'r') as zip_ref:
 			os.rename(folderpath + "\\Baseball_game.exe", folderpath + "\\gamefiles\\Old_Baseball_game.exe")
@@ -370,10 +366,8 @@ while True:
 
 		if openreleasenotes == False:
 			if "*" in splashmessage: altaltsplashmessage = splashmessage
-			if splashsize >= 32:
-				splashsizemode = 0
-			if splashsize <= 25:
-				splashsizemode = 1
+			if splashsize >= 32: splashsizemode = 0
+			if splashsize <= 25: splashsizemode = 1
 			if splashsizemode == 0: splashsize -= 0.85
 			if splashsizemode == 1: splashsize += 0.85
 			splash_font = pygame.font.SysFont("Mochiy Pop One", int(round(splashsize, 0))) # 45
@@ -444,10 +438,11 @@ while True:
 							if event.type == pygame.MOUSEBUTTONDOWN:
 								
 								
-								if event.button >= 4 and ".0" in str(event.button / 2):
-									if releasenotescroll <= 50: releasenotescroll += 40
-								elif event.button >= 5 and ".0" not in str(event.button / 2):
-									if releasenotescroll >= -950: releasenotescroll -= 40
+								if event.button >= 4:
+									if ".0" in str(event.button / 2):
+										if releasenotescroll <= 50: releasenotescroll += 40
+									else:
+										if releasenotescroll >= -950: releasenotescroll -= 40
 								else: openreleasenotes = False
 							if event.type == pygame.KEYDOWN:
 								openreleasenotes = False

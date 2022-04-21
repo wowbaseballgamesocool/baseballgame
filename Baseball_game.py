@@ -40,7 +40,7 @@ def opensave():
 		save.close()
 	if data == [0, 0, 0] or data == "[0, 0, 0]":
 		data = [0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
-	elif data != "" and data != None:
+	elif data != "" and data != None and data != "b'WzAsIDAsIDAsIDBd'":
 		data = data.strip("b''")
 		while len(data)%4 != 0: data += "="
 		
@@ -107,6 +107,12 @@ print("cwd = " + folderpath + "  W = " + str(week))
 try: os.remove(folderpath + "\\Baseball.Game.zip")
 except: pass
 try: os.remove(folderpath + "\\gamefiles\\Old_Baseball_game.exe")
+except: pass
+try: os.remove(folderpath + "\\gamefiles\\customballs.txt")
+except: pass
+try: os.remove(folderpath + "\\gamefiles\\custombats.txt")
+except: pass
+try: os.remove(folderpath + "\\gamefiles\\customfields.txt")
 except: pass
 
 # check updates

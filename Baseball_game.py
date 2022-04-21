@@ -409,51 +409,52 @@ while True:
 					
 					screen.blit(releasenotesbg, [0, 0])
 					screen.blit(releasenotesbg, [0, 0])
-					for i in range(7):
-						updatelinecount = 0
-						updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
+					for i in range(10):
+						try:
+							updatelinecount = 0
+							updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
 
-						if str(response.json()[i]["tag_name"]) == str(version): 
+							if str(response.json()[i]["tag_name"]) == str(version): 
 
-							updatetitlething___ += "     [ Latest ]"
+								updatetitlething___ += "     [ Latest ]"
 
-						updateinfotitle = med_font.render(updatetitlething___, True, grey)
-						updateinfo = small_font.render(response.json()[i]["body"], True, black)
-						if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
-							screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
-						if "\n" not in str(response.json()[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-							screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
-							pushdownupdateinfo += 30
-						else:
-							
-								a = str(response.json()[i]["body"])
-								b = r"\r\n"
-								try:
-									for b in a:
-										c = a.split("\r\n")
-										d = c[updatelinecount]
-										d = small_font.render(d, True, black)
-										if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-											screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
-										pushdownupdateinfo += 20
-										updatelinecount += 1
-								except: pass
-						pushdownupdateinfo += 55
-						for event in pygame.event.get():
-							if event.type == pygame.QUIT: exit()
-							if event.type == pygame.MOUSEBUTTONDOWN:
+							updateinfotitle = med_font.render(updatetitlething___, True, grey)
+							updateinfo = small_font.render(response.json()[i]["body"], True, black)
+							if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
+								screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
+							if "\n" not in str(response.json()[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+								screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
+								pushdownupdateinfo += 30
+							else:
 								
-								
-								if event.button >= 4:
-									if ".0" in str(event.button / 2):
-										if releasenotescroll <= 50: releasenotescroll += 40
-									else:
-										if releasenotescroll >= -950: releasenotescroll -= 40
-								else: openreleasenotes = False
-							if event.type == pygame.KEYDOWN:
-								openreleasenotes = False
-						pygame.display.update()
-
+									a = str(response.json()[i]["body"])
+									b = r"\r\n"
+									try:
+										for b in a:
+											c = a.split("\r\n")
+											d = c[updatelinecount]
+											d = small_font.render(d, True, black)
+											if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+												screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
+											pushdownupdateinfo += 20
+											updatelinecount += 1
+									except: pass
+							pushdownupdateinfo += 55
+							for event in pygame.event.get():
+								if event.type == pygame.QUIT: exit()
+								if event.type == pygame.MOUSEBUTTONDOWN:
+									
+									
+									if event.button >= 4:
+										if ".0" in str(event.button / 2):
+											if releasenotescroll <= 50: releasenotescroll += 40
+										else:
+											if releasenotescroll >= -950: releasenotescroll -= 40
+									else: openreleasenotes = False
+								if event.type == pygame.KEYDOWN:
+									openreleasenotes = False
+							pygame.display.update()
+						except: pass
 
 					
 					

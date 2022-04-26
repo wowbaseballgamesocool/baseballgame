@@ -310,11 +310,11 @@ pygame.time.set_timer(updateevent, 750)
 
 
 
+xp = 1300
 
 
 
 
-print(bucks)
 while True:
 	try:
 		level = math.floor(xp / 100) + 1
@@ -328,8 +328,10 @@ while True:
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
 		give("roseball", balllist, level, 6)
+		if level >= 13: bucks += 100
+		print(bucks)
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist)
-	except: pass
+	except Exception as e: print(e)
 	pygame.mouse.set_visible(True) #########
 	pygame.display.set_caption('Baseball Game -- Menu')
 	while start == False:

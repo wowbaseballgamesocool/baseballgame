@@ -39,7 +39,7 @@ def opensave():
 		data = save.read()
 		save.close()
 	if data == [0, 0, 0] or data == "[0, 0, 0]":
-		data = [0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
+		data = [0, 0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
 	elif data != "" and data != None and data != "b'WzAsIDAsIDAsIDBd'":
 		data = data.strip("b''")
 		while len(data)%4 != 0: data += "="
@@ -47,15 +47,15 @@ def opensave():
 		data = base64.b64decode(data)
 		data = str(data, "utf-8")
 		data = ast.literal_eval(data)
-	else: data = [0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
+	else: data = [0, 0, 0, 0, 0, "['ball']", "['bat']", "['field']"]
 	return data
 
 
 
 
-def save(ball, bat, field, xp, balllist, batlist, fieldlist):
+def save(ball, bat, field, xp, bucks, balllist, batlist, fieldlist):
 	with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-		list = "[" + str(ball) + ", " + str(bat) + ", " + str(field) + ", " + str(xp) + ", " + str(balllist) + ", " + str(batlist) + ", " + str(fieldlist) + "]"
+		list = "[" + str(ball) + ", " + str(bat) + ", " + str(field) + ", " + str(xp) + ", " + str(bucks) + ", " + str(balllist) + ", " + str(batlist) + ", " + str(fieldlist) + "]"
 		data = str(list)
 		
 		data = base64.b64encode(data.encode("utf-8"))
@@ -69,7 +69,7 @@ def save(ball, bat, field, xp, balllist, batlist, fieldlist):
 
 
 ratelimit = False
-ball, bat, field, xp, balllist, batlist, fieldlist = opensave()
+ball, bat, field, xp, bucks, balllist, batlist, fieldlist = opensave()
 
 balllist = ast.literal_eval(str(balllist))
 batlist = ast.literal_eval(str(batlist))
@@ -207,6 +207,7 @@ balllistnumber = data[0]
 batlistnumber = data[1]
 fieldlistnumber = data[2]
 xp = data[3]
+bucks = data[4]
 
 try:
 	balllist[balllistnumber]
@@ -273,6 +274,7 @@ battlepassboxpast = pygame.image.load('gamefiles/assets/battlepassboxpast.png').
 battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.png').convert_alpha()
 battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
 xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
+bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
 right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
 left_arrow = pygame.transform.rotate(right_arrow, 180)
 field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
@@ -312,7 +314,7 @@ pygame.time.set_timer(updateevent, 750)
 
 
 
-
+print(bucks)
 while True:
 	try:
 		level = math.floor(xp / 100) + 1
@@ -326,7 +328,7 @@ while True:
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
 		give("roseball", balllist, level, 6)
-		save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
+		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist)
 	except: pass
 	pygame.mouse.set_visible(True) #########
 	pygame.display.set_caption('Baseball Game -- Menu')
@@ -355,6 +357,7 @@ while True:
 
 
 		screen.blit(menubg_sprite, (0, 0))
+		screen.blit(bucksicon, (500, 20))
 		
 
 
@@ -566,7 +569,7 @@ while True:
 				xp += math.floor(int(doubles) * doublesscoring)
 				xp += math.floor(int(homeruns) * homerunsscoring)
 				xp += forplayingscoring
-				save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
+				save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist)
 				outs = 0
 				startplay = False
 				start = False
@@ -847,7 +850,7 @@ while True:
 
 				xp += math.floor(int(homeruns) * derbyhomerunsscoring)
 				xp += forplayingscoring
-				save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
+				save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist)
 
 				#print("Average FPS: " + str(round(averagefps, 0)))
 			#timertext = font_style.render(str(seconds), False, black)
@@ -1051,7 +1054,7 @@ while True:
 					
 				if assetrect.collidepoint(event.pos): 
 					asset = False
-					ball, bat, field, xp, balllist, batlist, fieldlist = opensave()
+					ball, bat, field, xp, bucks, balllist, batlist, fieldlist = opensave()
 
 					balllist = ast.literal_eval(str(balllist))
 					batlist = ast.literal_eval(str(batlist))
@@ -1326,7 +1329,7 @@ while True:
 					
 
 					
-					save(balllistnumber, batlistnumber, fieldlistnumber, xp, balllist, batlist, fieldlist)
+					save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist)
 					
 					ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
@@ -1416,6 +1419,12 @@ while True:
 					
 					waterfield = pygame.image.load('gamefiles/assets/fields/waterfield.png').convert_alpha()
 					screen.blit(pygame.transform.scale(waterfield, (90, 50)), [-35 + i * 115, 70])
+				
+				if a == 13:
+					
+					bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+					screen.blit(bucksicon100, [-35 + i * 135, 70])
+					#screen.blit(pygame.transform.scale(bucksicon, (90, 50)), [-35 + i * 115, 70])
 				
 				
 				

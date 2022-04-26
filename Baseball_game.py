@@ -125,13 +125,11 @@ except Exception as e:
 		print("Could not check for updated version (check internet connection)  [Max retries exceeded]")
 	elif str(e) == "'tag_name'" or str(e) == "0":
 		print("Could not check for updated version\nError: API rate limit exceeded (Try again later)")
-		ratelimit = True
-
-
-		
+		ratelimit = True	
 	else: 
 		print("Could not check for updated version\nError: " + str(e))
 	
+
 	internet = False
 if internet == True:
 	if str(version) != str(latestversion):
@@ -177,7 +175,7 @@ if internet == True:
 		
 		print("playing on latest version (" + str(version) + ")")
 
-pygame.init()
+
 
 
 with open(folderpath + "\\gamefiles\\hplay.json", "r") as hjson:
@@ -230,6 +228,7 @@ blue = (50, 153, 213)
 dis_width = 600
 dis_height = 400
 
+pygame.init()
 screen = pygame.display.set_mode((dis_width, dis_height))
 play("batsound.mp3", volume)
 releasenotescroll = 0

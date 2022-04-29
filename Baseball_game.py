@@ -30,11 +30,10 @@ def give(asset, list, level, unlocktier):
 	if level >= unlocktier: 
 		if asset not in list: list.append(asset)
 
-def givebucks(asset, list, level, unlocktier, bucks):
-	if level >= unlocktier: 
-		if asset not in list: 
-			list.append(asset)
-			
+def givebucks(list, level, unlocktier, bucks):
+	if level >= unlocktier:
+		if unlocktier not in list and unlocktier not in ["", ""]:
+			list.append(unlocktier)
 			bucks += 100
 	return bucks
 			
@@ -253,6 +252,7 @@ averagefps = 0
 splashsize = 35
 splashsizemode = 1
 page = 1
+shoppage = 1
 fps = 0
 altaltsplashmessage = ""
 pygame.display.set_caption('Baseball Game')
@@ -292,7 +292,7 @@ field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlis
 field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
 #bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
 #bat_sprite = pygame.transform.scale(bat_sprite, (20, 70)) #size of bat  old: 15, 70
-
+shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
 
 #ball_settings = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
@@ -321,7 +321,7 @@ pygame.time.set_timer(updateevent, 750)
 
 
 
-xp = 1300
+
 
 
 
@@ -339,11 +339,11 @@ while True:
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
 		give("roseball", balllist, level, 6)
-		#if level >= 13: bucks += 100
-		bucks = givebucks(13, buckslist, level, 13, bucks)
-		print(bucks)
+		bucks = givebucks(buckslist, level, 16, bucks)
+		bucks = givebucks(buckslist, level, 9, bucks)
+		
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
-	except Exception as a: print(a)
+	except: pass
 	pygame.mouse.set_visible(True) #########
 	pygame.display.set_caption('Baseball Game -- Menu')
 	while start == False:
@@ -1038,6 +1038,7 @@ while True:
 	while optionsmenu == True:
 		statsback = True
 		settingsback = True
+		shopback = True
 		screen.blit(optionsmenu_sprite, (0, 0))
 		
 		
@@ -1045,13 +1046,15 @@ while True:
 		settingsrect = pygame.Rect(210, dis_height - 350, 165, 130)
 		battlepassrect = pygame.Rect(120, dis_height - 170, 125, 85)
 		assetrect = pygame.Rect(290, dis_height - 175, 220, 80)
+		shoprect = pygame.Rect(350, dis_height - 265, 185, 75)
 		backrect = pygame.Rect(90, dis_height - 70, 410, 50)
 		
-		#if random.randint(1, 2) == 1:
+		if random.randint(1, 2) == 1:
 			#pygame.draw.rect(screen,red,(statsrect))
 			#pygame.draw.rect(screen,red,(settingsrect))
 			#pygame.draw.rect(screen,red,(backrect))
 			#pygame.draw.rect(screen,red,(assetrect))
+			pygame.draw.rect(screen,red,(shoprect))
 			#pygame.draw.rect(screen,red,(battlepassrect))
 		for event in pygame.event.get():
 			
@@ -1061,6 +1064,7 @@ while True:
 				
 				
 				if statsrect.collidepoint(event.pos): statsback = False
+				if shoprect.collidepoint(event.pos): shopback = False; screen.fill(white)
 				if battlepassrect.collidepoint(event.pos): 
 					battlepass = False
 					data = opensave()
@@ -1364,14 +1368,45 @@ while True:
 			pygame.display.update()
 
 	
-		
+		while shopback == False:
+			screen.blit(optionsmenustatsback_sprite, (-50, 50))
+			if shoppage < 2:
+				screen.blit(right_arrow, [500, 300])
+			if shoppage != 1:
+				screen.blit(left_arrow, [15, 300])
+			rightrect = pygame.Rect(500, 300, 100, 100)
+			leftrect = pygame.Rect(15, 300, 100, 100)
+			backrect = pygame.Rect(310, 315, 110, 55)
+
+			for i in range(2):
+
+				a = shoppage * 2 + i - 2
+				screen.blit(shopbox, [60 + i * 250, 35])
+
+				if a == 0:
+					snowfield = pygame.image.load('gamefiles/assets/fields/snowfield.png').convert_alpha()
+					screen.blit(pygame.transform.scale(snowfield, (163, 85)), [85 + i * 250, 43])
+
+			for event in pygame.event.get():
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE: shopback = True
+				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					if backrect.collidepoint(event.pos):
+						shopback = True
+					if rightrect.collidepoint(event.pos):
+						if shoppage < 2: shoppage += 1; screen.fill(white)
+					if leftrect.collidepoint(event.pos):
+						if shoppage != 1: shoppage -= 1; screen.fill(white)
+				if event.type == pygame.QUIT:
+					exit()
+			pygame.display.update()
 		
 
 		#xp = 0
 		while battlepass == False:
 			screen.fill(white)
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
-			for i in range(1, 5):
+			for i in range(1,5):
 
 				a = page * 4 + i - 4
 
@@ -1434,11 +1469,17 @@ while True:
 					waterfield = pygame.image.load('gamefiles/assets/fields/waterfield.png').convert_alpha()
 					screen.blit(pygame.transform.scale(waterfield, (90, 50)), [-35 + i * 115, 70])
 				
-				if a == 13:
+				if a == 16:
+					
+					bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+					screen.blit(bucksicon100, [-35 + i * 120, 70])
+					
+				
+				if a == 9:
 					
 					bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
 					screen.blit(bucksicon100, [-35 + i * 135, 70])
-					#screen.blit(pygame.transform.scale(bucksicon, (90, 50)), [-35 + i * 115, 70])
+					
 				
 				
 				
@@ -1456,10 +1497,11 @@ while True:
 				ab = verybig_font.render(str(a), True, grey)
 				screen.blit(ab, [-10 + i * 115, 230])
 				
-				
-
-			screen.blit(right_arrow, [500, 300])
-			screen.blit(left_arrow, [15, 300])
+			
+			if page != 5:
+				screen.blit(right_arrow, [500, 300])
+			if page != 1:
+				screen.blit(left_arrow, [15, 300])
 			rightrect = pygame.Rect(500, 300, 100, 100)
 			leftrect = pygame.Rect(15, 300, 100, 100)
 			backrect = pygame.Rect(310, 315, 110, 55)
@@ -1470,6 +1512,7 @@ while True:
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_ESCAPE: battlepass = True
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					screen.fill(white)
 					if backrect.collidepoint(event.pos):
 						battlepass = True
 					if rightrect.collidepoint(event.pos):

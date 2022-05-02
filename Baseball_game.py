@@ -287,6 +287,8 @@ battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.pn
 xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
 bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
 right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
+buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
+buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
 left_arrow = pygame.transform.rotate(right_arrow, 180)
 field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
 field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
@@ -1369,6 +1371,8 @@ while True:
 
 	
 		while shopback == False:
+			
+			#save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
 			if shoppage < 2:
 				screen.blit(right_arrow, [500, 300])
@@ -1377,15 +1381,30 @@ while True:
 			rightrect = pygame.Rect(500, 300, 100, 100)
 			leftrect = pygame.Rect(15, 300, 100, 100)
 			backrect = pygame.Rect(310, 315, 110, 55)
-
+			
+			evenbuyrect = pygame.Rect(80, 210, 167, 65)
+			oddbuyrect = pygame.Rect(80 + 1 * 250, 210, 167, 65)
 			for i in range(2):
 
 				a = shoppage * 2 + i - 2
 				screen.blit(shopbox, [60 + i * 250, 35])
+				#if ".0" in str(a / 2): 
+				#buyrect = pygame.Rect(80 + i * 250, 210, 167, 65)
+				#else: buyrect = pygame.Rect(80 + i * 250, 210, 167, 65)
+				
+				#if random.randint(1, 2) == 1:
+					#pygame.draw.rect(screen,red,(buyrect))
 
 				if a == 0:
 					snowfield = pygame.image.load('gamefiles/assets/fields/snowfield.png').convert_alpha()
 					screen.blit(pygame.transform.scale(snowfield, (163, 85)), [85 + i * 250, 43])
+					if "snowfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
+				if a == 1:
+					sandfield = pygame.image.load('gamefiles/assets/fields/sandfield.png').convert_alpha()
+					screen.blit(pygame.transform.scale(sandfield, (163, 85)), [85 + i * 250, 43])
+					if "sandfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():
 				if event.type == pygame.KEYDOWN:
@@ -1396,7 +1415,14 @@ while True:
 					if rightrect.collidepoint(event.pos):
 						if shoppage < 2: shoppage += 1; screen.fill(white)
 					if leftrect.collidepoint(event.pos):
-						if shoppage != 1: shoppage -= 1#; screen.fill(white)
+						if shoppage != 1: shoppage -= 1
+					if evenbuyrect.collidepoint(event.pos):
+						if page == 1: give("snowfield", fieldlist, 99, 99)
+						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+					if oddbuyrect.collidepoint(event.pos):
+						print("2")
+						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+					
 				if event.type == pygame.QUIT:
 					exit()
 			pygame.display.update()
@@ -1512,7 +1538,7 @@ while True:
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_ESCAPE: battlepass = True
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					screen.fill(white)
+					#screen.fill(white)
 					if backrect.collidepoint(event.pos):
 						battlepass = True
 					if rightrect.collidepoint(event.pos):

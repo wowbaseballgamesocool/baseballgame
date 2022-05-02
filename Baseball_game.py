@@ -1049,12 +1049,12 @@ while True:
 		shoprect = pygame.Rect(350, dis_height - 265, 185, 75)
 		backrect = pygame.Rect(90, dis_height - 70, 410, 50)
 		
-		if random.randint(1, 2) == 1:
+		#if random.randint(1, 2) == 1:
 			#pygame.draw.rect(screen,red,(statsrect))
 			#pygame.draw.rect(screen,red,(settingsrect))
 			#pygame.draw.rect(screen,red,(backrect))
 			#pygame.draw.rect(screen,red,(assetrect))
-			pygame.draw.rect(screen,red,(shoprect))
+			#pygame.draw.rect(screen,red,(shoprect))
 			#pygame.draw.rect(screen,red,(battlepassrect))
 		for event in pygame.event.get():
 			
@@ -1396,7 +1396,7 @@ while True:
 					if rightrect.collidepoint(event.pos):
 						if shoppage < 2: shoppage += 1; screen.fill(white)
 					if leftrect.collidepoint(event.pos):
-						if shoppage != 1: shoppage -= 1; screen.fill(white)
+						if shoppage != 1: shoppage -= 1#; screen.fill(white)
 				if event.type == pygame.QUIT:
 					exit()
 			pygame.display.update()

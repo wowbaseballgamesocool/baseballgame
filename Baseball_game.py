@@ -37,8 +37,13 @@ def givebucks(list, level, unlocktier, bucks):
 			bucks += 100
 	return bucks
 			
-
-
+def buy(asset, bucks, cost, list):
+	if bucks >= cost:
+		if asset not in list: 
+			list.append(asset)
+			return bucks-cost, list
+	return bucks, list
+	
 
 
 
@@ -1388,9 +1393,7 @@ while True:
 
 				a = shoppage * 2 + i - 2
 				screen.blit(shopbox, [60 + i * 250, 35])
-				#if ".0" in str(a / 2): 
-				#buyrect = pygame.Rect(80 + i * 250, 210, 167, 65)
-				#else: buyrect = pygame.Rect(80 + i * 250, 210, 167, 65)
+
 				
 				#if random.randint(1, 2) == 1:
 					#pygame.draw.rect(screen,red,(buyrect))
@@ -1417,10 +1420,10 @@ while True:
 					if leftrect.collidepoint(event.pos):
 						if shoppage != 1: shoppage -= 1
 					if evenbuyrect.collidepoint(event.pos):
-						if page == 1: give("snowfield", fieldlist, 99, 99)
+						if page == 1: bucks, fieldlist = buy("snowfield", bucks, 100, fieldlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					if oddbuyrect.collidepoint(event.pos):
-						print("2")
+						if page == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					
 				if event.type == pygame.QUIT:

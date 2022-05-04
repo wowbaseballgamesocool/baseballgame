@@ -291,6 +291,7 @@ battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.
 battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
 xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
 bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
+bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
 right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
 buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
 buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
@@ -348,7 +349,7 @@ while True:
 		give("roseball", balllist, level, 6)
 		bucks = givebucks(buckslist, level, 16, bucks)
 		bucks = givebucks(buckslist, level, 9, bucks)
-		
+		bucks += 50
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 	except: pass
 	pygame.mouse.set_visible(True) #########
@@ -378,7 +379,7 @@ while True:
 
 
 		screen.blit(menubg_sprite, (0, 0))
-		screen.blit(bucksicon, (500, 20))
+		
 		
 
 
@@ -1389,6 +1390,10 @@ while True:
 			
 			evenbuyrect = pygame.Rect(80, 210, 167, 65)
 			oddbuyrect = pygame.Rect(80 + 1 * 250, 210, 167, 65)
+
+			screen.blit(bucksicon, (150, 320))
+			bucks_text = splash_font.render(str(opensave()[4]), True, yellow)
+			screen.blit(bucks_text, [175, 360])
 			for i in range(2):
 
 				a = shoppage * 2 + i - 2
@@ -1401,12 +1406,18 @@ while True:
 				if a == 0:
 					snowfield = pygame.image.load('gamefiles/assets/fields/snowfield.png').convert_alpha()
 					screen.blit(pygame.transform.scale(snowfield, (163, 85)), [85 + i * 250, 43])
+					screen.blit(bucksicon100, [135 + i * 250, 130])
 					if "snowfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 1:
 					sandfield = pygame.image.load('gamefiles/assets/fields/sandfield.png').convert_alpha()
 					screen.blit(pygame.transform.scale(sandfield, (163, 85)), [85 + i * 250, 43])
 					if "sandfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
+				if a == 2:
+					axebat = pygame.image.load('gamefiles/assets/bats/axebat.png').convert_alpha()
+					screen.blit(pygame.transform.scale(axebat, (45, 120)), [140 + i * 250, 43])
+					if "axebat" not in opensave()[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():
@@ -1416,14 +1427,15 @@ while True:
 					if backrect.collidepoint(event.pos):
 						shopback = True
 					if rightrect.collidepoint(event.pos):
-						if shoppage < 2: shoppage += 1; screen.fill(white)
+						if shoppage < 2: shoppage += 1#; screen.fill(white)
 					if leftrect.collidepoint(event.pos):
 						if shoppage != 1: shoppage -= 1
 					if evenbuyrect.collidepoint(event.pos):
-						if page == 1: bucks, fieldlist = buy("snowfield", bucks, 100, fieldlist)
+						if shoppage == 1: bucks, fieldlist = buy("snowfield", bucks, 100, fieldlist)
+						if shoppage == 2: bucks, batlist = buy("axebat", bucks, 100, batlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					if oddbuyrect.collidepoint(event.pos):
-						if page == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
+						if shoppage == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					
 				if event.type == pygame.QUIT:
@@ -1499,14 +1511,12 @@ while True:
 					screen.blit(pygame.transform.scale(waterfield, (90, 50)), [-35 + i * 115, 70])
 				
 				if a == 16:
-					
-					bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+								
 					screen.blit(bucksicon100, [-35 + i * 120, 70])
 					
 				
 				if a == 9:
 					
-					bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
 					screen.blit(bucksicon100, [-35 + i * 135, 70])
 					
 				

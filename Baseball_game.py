@@ -1,9 +1,5 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
 
-year, week, day = datetime.date.today().isocalendar(); week += 4
-for i in range(year - 2022): week += 52
-for i in range(day - 6): week += 1
-
 
 #from PIL import Image, ImageSequence
 folderpath = os.getcwd()
@@ -16,6 +12,16 @@ derbyhomerunsscoring = 3.2
 homerunsscoring = 2.8
 singlesscoring = 1.6
 doublesscoring = 2.6
+
+def weeks():
+	year, week, day = datetime.date.today().isocalendar(); week += 4
+	for i in range(year - 2022): week += 52
+	for i in range(day - 6): week += 1
+	
+	for i in range(year - 2021): week += round((365 / 7 - 52) * (round(year - 2020, 0) / 4), 0) # this wont do anything until 2034 but whatever
+	return str(week).replace(".0", "")
+
+
 
 #from pygame import mixer
 #mixer.init()
@@ -30,11 +36,11 @@ def give(asset, list, level, unlocktier):
 	if level >= unlocktier: 
 		if asset not in list: list.append(asset)
 
-def givebucks(list, level, unlocktier, bucks):
+def givebucks(list, level, unlocktier, bucks, togive):
 	if level >= unlocktier:
 		if unlocktier not in list and unlocktier not in ["", ""]:
 			list.append(unlocktier)
-			bucks += 100
+			bucks += togive
 	return bucks
 			
 def buy(asset, bucks, cost, list):
@@ -99,7 +105,7 @@ splashmessage = random.choice([
 								"Now on PS4!",
 								"A line and a ball * and they dont even rotate!",
 								#"Better than real baseball!",
-								#str(week) + " weeks!",
+								weeks() + " weeks!",
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
@@ -115,7 +121,7 @@ splashmessage = random.choice([
 
 
 internet = True
-print("cwd = " + folderpath + "  W = " + str(week))
+print("cwd = " + folderpath + "  W = " + weeks())
 
 
 try: os.remove(folderpath + "\\Baseball.Game.zip")
@@ -292,6 +298,7 @@ battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.pn
 xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
 bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
 bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+bucksicon75 = pygame.image.load('gamefiles/assets/bucks75.png').convert_alpha()
 right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
 buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
 buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
@@ -347,8 +354,9 @@ while True:
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
 		give("roseball", balllist, level, 6)
-		bucks = givebucks(buckslist, level, 16, bucks)
-		bucks = givebucks(buckslist, level, 9, bucks)
+		bucks = givebucks(buckslist, level, 16, bucks, 100)
+		bucks = givebucks(buckslist, level, 11, bucks, 100)
+		bucks = givebucks(buckslist, level, 9, bucks, 75)
 		bucks += 50
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 	except: pass
@@ -1427,7 +1435,7 @@ while True:
 					if backrect.collidepoint(event.pos):
 						shopback = True
 					if rightrect.collidepoint(event.pos):
-						if shoppage < 2: shoppage += 1#; screen.fill(white)
+						if shoppage < 2: shoppage += 1; screen.fill(white)
 					if leftrect.collidepoint(event.pos):
 						if shoppage != 1: shoppage -= 1
 					if evenbuyrect.collidepoint(event.pos):
@@ -1515,9 +1523,13 @@ while True:
 					screen.blit(bucksicon100, [-35 + i * 120, 70])
 					
 				
+				if a == 11:
+					
+					screen.blit(bucksicon100, [-75 + i * 135, 70])
+				
 				if a == 9:
 					
-					screen.blit(bucksicon100, [-35 + i * 135, 70])
+					screen.blit(bucksicon75, [-35 + i * 135, 70])
 					
 				
 				

@@ -1,4 +1,8 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 10bb1d4 (test)
 
 
 #from PIL import Image, ImageSequence

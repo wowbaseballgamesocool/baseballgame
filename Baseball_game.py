@@ -17,9 +17,9 @@ def weeks():
 	year, week, day = datetime.date.today().isocalendar(); week += 4
 	for i in range(year - 2022): week += 52
 	for i in range(day - 6): week += 1
-	# note: this should say for i in range(year - 2022) below
-	for i in range(year - 2021): week += round((365 / 7 - 52) * (round(year - 2020, 0) / 4), 0) # this wont do anything until 2034 but whatever
-	return str(week).replace(".0", "")# note: change round() here to math.floor()            ^ remove this ', 0'
+
+	for i in range(year - 2022): week += math.floor((365 / 7 - 52) * (round(year - 2020, 0) / 4))
+	return str(week).replace(".0", "")
 
 
 

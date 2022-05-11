@@ -1426,6 +1426,11 @@ while True:
 					screen.blit(pygame.transform.scale(axebat, (45, 120)), [140 + i * 250, 43])
 					if "axebat" not in opensave()[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
+				if a == 3:
+					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():
 				if event.type == pygame.KEYDOWN:
@@ -1443,6 +1448,7 @@ while True:
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					if oddbuyrect.collidepoint(event.pos):
 						if shoppage == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
+						if shoppage == 2: bucks, balllist = buy("roseball", bucks, 100, balllist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					
 				if event.type == pygame.QUIT:

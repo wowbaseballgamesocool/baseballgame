@@ -139,6 +139,7 @@ except: pass
 try: 
 	response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases")
 	latestversion = response.json()[0]["tag_name"].strip("v")
+	if latestversion == "1.2.1": raise Exception("Github pulled wrong version")
 except Exception as e:
 	if "Max retries exceeded with url" in str(e):
 		print("Could not check for updated version (check internet connection)  [Max retries exceeded]")
@@ -1401,7 +1402,7 @@ while True:
 			screen.blit(bucksicon, (150, 320))
 			bucks_text = splash_font.render(str(opensave()[4]), True, yellow)
 			screen.blit(bucks_text, [175, 360])
-			for i in range(2):
+			for i in range(3):
 
 				a = shoppage * 2 + i - 2
 				screen.blit(shopbox, [60 + i * 250, 35])

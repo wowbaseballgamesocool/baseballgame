@@ -257,8 +257,8 @@ releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []
 splashsize = 35
-splashsizemode, page, shoppage = 1
-fps, averagefps = 0
+splashsizemode, page, shoppage = 1, 1, 1
+fps, averagefps = 0, 0
 altaltsplashmessage = ""
 pygame.display.set_caption('Baseball Game')
 
@@ -314,7 +314,7 @@ verybig_font = pygame.font.SysFont("Mochiy Pop One", 70)
 #mesg = font_style.render("", True, red)
 
 #menuplace = 1
-start, openreleasenotes = False
+start, openreleasenotes = False, False
 clock = pygame.time.Clock()
 updateevent = pygame.USEREVENT + 1
 secondevent = pygame.USEREVENT + 2
@@ -1378,7 +1378,7 @@ while True:
 			
 			#save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
-			if shoppage < 2:
+			if shoppage < 3:
 				screen.blit(right_arrow, [500, 300])
 			if shoppage != 1:
 				screen.blit(left_arrow, [15, 300])
@@ -1392,7 +1392,7 @@ while True:
 			screen.blit(bucksicon, (150, 320))
 			bucks_text = splash_font.render(str(opensave()[4]), True, yellow)
 			screen.blit(bucks_text, [175, 360])
-			for i in range(3):
+			for i in range(2):
 
 				a = shoppage * 2 + i - 2
 				screen.blit(shopbox, [60 + i * 250, 35])
@@ -1430,7 +1430,7 @@ while True:
 					if backrect.collidepoint(event.pos):
 						shopback = True
 					if rightrect.collidepoint(event.pos):
-						if shoppage < 2: shoppage += 1; screen.fill(white)
+						if shoppage < 3: shoppage += 1; screen.fill(white)
 					if leftrect.collidepoint(event.pos):
 						if shoppage != 1: shoppage -= 1
 					if evenbuyrect.collidepoint(event.pos):

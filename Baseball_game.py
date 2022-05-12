@@ -1422,6 +1422,16 @@ while True:
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
 					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
+				if a == 5:
+					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
+				if a == 6:
+					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():
 				if event.type == pygame.KEYDOWN:
@@ -1436,10 +1446,12 @@ while True:
 					if evenbuyrect.collidepoint(event.pos):
 						if shoppage == 1: bucks, fieldlist = buy("snowfield", bucks, 100, fieldlist)
 						if shoppage == 2: bucks, batlist = buy("axebat", bucks, 100, batlist)
+						if shoppage == 3: bucks, batlist = buy("roseball", bucks, 100, batlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					if oddbuyrect.collidepoint(event.pos):
 						if shoppage == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
 						if shoppage == 2: bucks, balllist = buy("roseball", bucks, 100, balllist)
+						if shoppage == 3: bucks, balllist = buy("roseball", bucks, 100, balllist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					
 				if event.type == pygame.QUIT:

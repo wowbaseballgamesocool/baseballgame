@@ -240,13 +240,13 @@ except:
 	fieldlistnumber = 0
 
 
-grey = (50, 50, 50)
+#grey = (50, 50, 50)
 white = (255, 255, 255)
 yellow = (215, 215, 102)
 black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
-blue = (50, 153, 213)
+#blue = (50, 153, 213)
 dis_width = 600
 dis_height = 400
 
@@ -254,17 +254,11 @@ pygame.init()
 screen = pygame.display.set_mode((dis_width, dis_height))
 play("batsound.mp3", volume)
 releasenotescroll = 0
-#fieldlistnumber = 0
-#balllistnumber = 0
-#batlistnumber = 0
-message = ""; startticks = 2; time = 0
+#message = ""; startticks = 2; time = 0
 fpslist = []
-averagefps = 0
 splashsize = 35
-splashsizemode = 1
-page = 1
-shoppage = 1
-fps = 0
+splashsizemode, page, shoppage = 1
+fps, averagefps = 0
 altaltsplashmessage = ""
 pygame.display.set_caption('Baseball Game')
 
@@ -310,8 +304,6 @@ field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
 shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
 
-#ball_settings = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
-#ball_settings = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
 
 
 med_font = pygame.font.SysFont("Mochiy Pop One", 30)
@@ -319,12 +311,10 @@ font_style = pygame.font.SysFont("Mochiy Pop One", 50)
 small_font = pygame.font.SysFont("Mochiy Pop One", 20)
 big_font = pygame.font.SysFont("Mochiy Pop One", 40)
 verybig_font = pygame.font.SysFont("Mochiy Pop One", 70)
-mesg = font_style.render("", True, red)
+#mesg = font_style.render("", True, red)
 
-#pygame.mouse.set_visible(True) ######### ctrl f to change this
-menuplace = 1
-start = False
-openreleasenotes = False
+#menuplace = 1
+start, openreleasenotes = False
 clock = pygame.time.Clock()
 updateevent = pygame.USEREVENT + 1
 secondevent = pygame.USEREVENT + 2

@@ -240,13 +240,13 @@ except:
 	fieldlistnumber = 0
 
 
-#grey = (50, 50, 50)
+grey = (50, 50, 50)
 white = (255, 255, 255)
 yellow = (215, 215, 102)
 black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
-#blue = (50, 153, 213)
+blue = (50, 153, 213)
 dis_width = 600
 dis_height = 400
 
@@ -433,9 +433,8 @@ while True:
 					screen.blit(releasenotesbg, [0, 0])
 					for i in range(10):
 						try:
-							updatelinecount = 0
+							updatelinecount = 03
 							updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
-
 							if str(response.json()[i]["tag_name"]) == str(version): 
 
 								updatetitlething___ += "     [ Latest ]"

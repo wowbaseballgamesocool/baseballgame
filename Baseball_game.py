@@ -367,7 +367,7 @@ while True:
 		startplay = False
 		hit = False
 		firstswing = True
-		
+		if openreleasenotes == None: exit()
 		strikes, runs, runner, singles, doubles, homeruns, hit_type = 0, 0, 0, 0, 0, 0, 0
 		start = False
 		ballx = 265
@@ -433,7 +433,7 @@ while True:
 					screen.blit(releasenotesbg, [0, 0])
 					for i in range(10):
 						try:
-							updatelinecount = 03
+							updatelinecount = 0
 							updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
 							if str(response.json()[i]["tag_name"]) == str(version): 
 
@@ -462,7 +462,7 @@ while True:
 									except: pass
 							pushdownupdateinfo += 55
 							for event in pygame.event.get():
-								if event.type == pygame.QUIT: exit()
+								if event.type == pygame.QUIT: openreleasenotes = None
 								if event.type == pygame.MOUSEBUTTONDOWN:
 									
 									

@@ -382,11 +382,6 @@ while True:
 
 
 
-		#all_sprites = animation("foxy.gif")
-		
-		#all_sprites.update()
-		#all_sprites.draw(screen)
-		#
 		#splashscreen
 
 		
@@ -416,6 +411,8 @@ while True:
 
 		
 		if openreleasenotes:
+			screen.blit(releasenotesbg, [0, 0])
+			screen.blit(releasenotesbg, [0, 0])
 			
 			
 			if internet:
@@ -429,8 +426,7 @@ while True:
 					
 					
 					
-					screen.blit(releasenotesbg, [0, 0])
-					screen.blit(releasenotesbg, [0, 0])
+					
 					for i in range(10):
 						try:
 							updatelinecount = 0
@@ -461,21 +457,22 @@ while True:
 											updatelinecount += 1
 									except: pass
 							pushdownupdateinfo += 55
-							for event in pygame.event.get():
-								if event.type == pygame.QUIT: openreleasenotes = None
-								if event.type == pygame.MOUSEBUTTONDOWN:
-									
-									
-									if event.button >= 4:
-										if ".0" in str(event.button / 2):
-											if releasenotescroll <= 50: releasenotescroll += 40
-										else:
-											if releasenotescroll >= -950: releasenotescroll -= 40
-									else: openreleasenotes = False
-								if event.type == pygame.KEYDOWN:
-									openreleasenotes = False
-							pygame.display.update()
 						except: pass
+						for event in pygame.event.get():
+							if event.type == pygame.QUIT: openreleasenotes = None
+							if event.type == pygame.MOUSEBUTTONDOWN:
+								
+								
+								if event.button >= 4:
+									if ".0" in str(event.button / 2):
+										if releasenotescroll <= 50: releasenotescroll += 30
+									else:
+										if releasenotescroll >= -950: releasenotescroll -= 30
+								else: openreleasenotes = False
+							if event.type == pygame.KEYDOWN:
+								openreleasenotes = False
+						pygame.display.update()
+						
 
 					
 					

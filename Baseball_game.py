@@ -140,6 +140,8 @@ try:
 	response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases")
 	latestversion = response.json()[0]["tag_name"].strip("v")
 	if latestversion == "1.2.1": raise Exception("Github pulled wrong version")
+	with open(folderpath + "/gamefiles/cache.txt", "w") as file:
+		file.write(str(response.json())); file.close()
 except Exception as e:
 	if "Max retries exceeded with url" in str(e):
 		print("Could not check for updated version (check internet connection)  [Max retries exceeded]")
@@ -197,7 +199,11 @@ if internet == True:
 
 
 
-
+if os.path.exists(folderpath + "\\gamefiles\\cache.txt") == False:
+	os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\cache.txt", folderpath + "\\gamefiles\\cache.txt")
+with open(folderpath + "\\gamefiles\\cache.txt", "r") as cachefile:
+	response = str(cachefile.read())
+	cachefile.close()
 with open(folderpath + "\\gamefiles\\hplay.json", "r") as hjson:
 	file = hjson.read()
 	hjson.close()
@@ -411,15 +417,20 @@ while True:
 
 		
 		if openreleasenotes:
-			screen.blit(releasenotesbg, [0, 0])
-			screen.blit(releasenotesbg, [0, 0])
 			
 			
-			if internet:
-				#screen.fill(white)
+			
+			if internet or response != "":
+				screen.blit(releasenotesbg, [0, 0])
+				screen.blit(releasenotesbg, [0, 0])
 				pushdownupdateinfo = 0
 				updatelinecount = 0
-				
+				#if cache != "" and internet == False: response = cache
+				#else: print(response.json())# = response.json()
+				#response = json.loads(response)
+				try:
+					response = ast.literal_eval(response)
+				except: pass
 				
 				
 				if openreleasenotes:
@@ -430,21 +441,21 @@ while True:
 					for i in range(10):
 						try:
 							updatelinecount = 0
-							updatetitlething___ = response.json()[i]["name"] + "  --  " + response.json()[i]["tag_name"]
-							if str(response.json()[i]["tag_name"]) == str(version): 
+							updatetitlething___ = response[i]["name"] + "  --  " + response[i]["tag_name"]
+							if str(response[i]["tag_name"]) == str(version): 
 
 								updatetitlething___ += "     [ Latest ]"
 
 							updateinfotitle = med_font.render(updatetitlething___, True, grey)
-							updateinfo = small_font.render(response.json()[i]["body"], True, black)
+							updateinfo = small_font.render(response[i]["body"], True, black)
 							if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
 								screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
-							if "\n" not in str(response.json()[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+							if "\n" not in str(response[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
 								screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
 								pushdownupdateinfo += 30
 							else:
 								
-									a = str(response.json()[i]["body"])
+									a = str(response[i]["body"])
 									b = r"\r\n"
 									try:
 										for b in a:
@@ -479,12 +490,8 @@ while True:
 		
 	
 			else:	# might have to move this error text if stats/settings were to go here
-				if ratelimit:
-					updateinfo = small_font.render("API rate limit exceeded (Try again later)", True, black)
-					screen.blit(updateinfo, [0, dis_height - 45])
-				else: 
-					updateinfo = med_font.render("You are Offline", True, black)
-					screen.blit(updateinfo, [20, dis_height - 110])
+				updateinfo = small_font.render("Try again later", True, black)
+				screen.blit(updateinfo, [20, dis_height - 110])
 
 
 

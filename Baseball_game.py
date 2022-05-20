@@ -102,17 +102,18 @@ else: ABK = "-" + str(round(random.uniform(2.64, 0.16), 2)) + "%"
 splashmessage = random.choice([
 								#"Battle Pass soon!",
 								"Now on PS4!",
-								"A line and a ball * and they dont even rotate!",
+								#"A line and a ball * and they dont even rotate!",
 								#"Better than real baseball!",
 								weeks() + " weeks!",
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
-								"sponsored by * the inability to spell gmae!",
+								#"sponsored by * the inability to spell gmae!",
 								#"Jones."
 								#"Switch Port?" # the 'rt?' part looks funny
-								"What were you expecting?",
-								"ABK Stock " + ABK
+								"What were YOU expecting?",
+								"ABK Stock " + ABK,
+								#"   ono my skirt *   -rick" # nah
 								#""
 								#""
 							])
@@ -1405,15 +1406,15 @@ while True:
 					#pygame.draw.rect(screen,red,(buyrect))
 
 				if a == 0:
-					snowfield = pygame.image.load('gamefiles/assets/fields/snowfield.png').convert_alpha()
-					screen.blit(pygame.transform.scale(snowfield, (163, 85)), [85 + i * 250, 43])
+					smileball = pygame.image.load('gamefiles/assets/balls/smileball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(smileball, (125, 120)), [105 + i * 250, 43])
 					screen.blit(bucksicon100, [135 + i * 250, 130])
-					if "snowfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "smileball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 1:
-					sandfield = pygame.image.load('gamefiles/assets/fields/sandfield.png').convert_alpha()
-					screen.blit(pygame.transform.scale(sandfield, (163, 85)), [85 + i * 250, 43])
-					if "sandfield" not in opensave()[7]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					baseballball = pygame.image.load('gamefiles/assets/balls/baseballball.png').convert_alpha()
+					screen.blit(pygame.transform.scale(baseballball, (125, 120)), [105 + i * 250, 43])
+					if "baseballball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 2:
 					axebat = pygame.image.load('gamefiles/assets/bats/axebat.png').convert_alpha()
@@ -1447,12 +1448,12 @@ while True:
 					if leftrect.collidepoint(event.pos):
 						if shoppage != 1: shoppage -= 1
 					if evenbuyrect.collidepoint(event.pos):
-						if shoppage == 1: bucks, fieldlist = buy("snowfield", bucks, 100, fieldlist)
+						if shoppage == 1: bucks, balllist = buy("smileball", bucks, 100, balllist)
 						if shoppage == 2: bucks, batlist = buy("axebat", bucks, 100, batlist)
 						if shoppage == 3: bucks, batlist = buy("roseball", bucks, 100, batlist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 					if oddbuyrect.collidepoint(event.pos):
-						if shoppage == 1: bucks, fieldlist = buy("sandfield", bucks, 100, fieldlist)
+						if shoppage == 1: bucks, balllist = buy("baseballball", bucks, 100, balllist)
 						if shoppage == 2: bucks, balllist = buy("roseball", bucks, 100, balllist)
 						if shoppage == 3: bucks, balllist = buy("roseball", bucks, 100, balllist)
 						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)

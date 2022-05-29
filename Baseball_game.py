@@ -21,16 +21,6 @@ def weeks():
 	return str(week).replace(".0", "")
 
 
-
-#from pygame import mixer
-#mixer.init()
-def play(file, volume):
-	#mixer.music.load(folderpath + "//gamefiles//audio//" + file)
-	#mixer.music.set_volume(volume)
-	#mixer.music.play()
-	#mixer.music.unload()
-	pass
-
 def give(asset, list, level, unlocktier):
 	if level >= unlocktier: 
 		if asset not in list: list.append(asset)
@@ -259,7 +249,7 @@ dis_height = 400
 
 pygame.init()
 screen = pygame.display.set_mode((dis_width, dis_height))
-play("batsound.mp3", volume)
+
 releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []

@@ -357,7 +357,7 @@ while True:
 		bucks += 50
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 	except: pass
-	pygame.mouse.set_visible(True) #########
+	pygame.mouse.set_visible(True) 
 	pygame.display.set_caption('Baseball Game -- Menu')
 	while start == False:
 		
@@ -426,9 +426,7 @@ while True:
 				screen.blit(releasenotesbg, [0, 0])
 				pushdownupdateinfo = 0
 				updatelinecount = 0
-				#if cache != "" and internet == False: response = cache
-				#else: print(response.json())# = response.json()
-				#response = json.loads(response)
+
 				try:
 					response = ast.literal_eval(response)
 				except: pass
@@ -516,26 +514,16 @@ while True:
 			#pygame.draw.rect(screen,red,(releaserect))
 		
 		for event in pygame.event.get():
-			#if exitrect.collidepoint(pygame.mouse.get_pos()):
-			#	menuplace = 4
-			#if optionsrect.collidepoint(pygame.mouse.get_pos()):
-			#	menuplace = 3
-			#if derbyrect.collidepoint(pygame.mouse.get_pos()):
-			#	menuplace = 2
-			#if playrect.collidepoint(pygame.mouse.get_pos()):
-			#	menuplace = 1
+
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				
 				if exitrect.collidepoint(event.pos): exit()
 				if optionsrect.collidepoint(event.pos):
-					#screen = pygame.display.set_mode((650, 500))
-					#optionsmenu_sprite = pygame.transform.scale(optionsmenu_sprite, (650, 500))
 					play("batsound.mp3", volume)
 					pygame.display.set_caption('Baseball Game -- Options')
 					
 					start = True
 					optionsmenu = True
-					#menuplace = 1
 				if derbyrect.collidepoint(event.pos):
 					play("batsound.mp3", volume)
 					pygame.display.set_caption('Baseball Game -- Derby')
@@ -637,14 +625,6 @@ while True:
 
 		screen.blit(mesg, [dis_width / 2 + 125, dis_height / 2])
 		
-		#if pygame.time.get_ticks()/1000 - startticks/1000 <= time:
-		
-	
-			#if pygame.time.get_ticks() >= time * 1000:
-				#text = med_font.render(message, True, black)
-				
-				#screen.blit(text, [dis_width / 2 + 125, dis_height / 2])
-			#else: message = ""; startticks = 2; time = 0
 		
 		if hit == False:
 			bally += 0.07
@@ -876,8 +856,6 @@ while True:
 				xp += forplayingscoring
 				save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 
-				#print("Average FPS: " + str(round(averagefps, 0)))
-			#timertext = font_style.render(str(seconds), False, black)
 			timertext = font_style.render("60.00", True, black)
 			screen.blit(timertext, [dis_width - 85, dis_height - 400])
 			if int(highderbyhomeruns) < int(homeruns):

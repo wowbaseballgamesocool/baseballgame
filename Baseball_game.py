@@ -22,14 +22,6 @@ def weeks():
 
 
 
-#from pygame import mixer
-#mixer.init()
-def play(file, volume):
-	#mixer.music.load(folderpath + "//gamefiles//audio//" + file)
-	#mixer.music.set_volume(volume)
-	#mixer.music.play()
-	#mixer.music.unload()
-	pass
 
 def give(asset, list, level, unlocktier):
 	if level >= unlocktier: 
@@ -259,7 +251,7 @@ dis_height = 400
 
 pygame.init()
 screen = pygame.display.set_mode((dis_width, dis_height))
-play("batsound.mp3", volume)
+
 releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []
@@ -311,6 +303,10 @@ field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
 shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
 
+def message_to_screen(msg, color, size, x, y):
+	font = pygame.font.SysFont(None, size)
+	screen_text = font.render(msg, True, color)
+	screen.blit(screen_text, [x, y])
 
 
 med_font = pygame.font.SysFont("Mochiy Pop One", 30)
@@ -354,6 +350,7 @@ while True:
 		bucks = givebucks(buckslist, level, 16, bucks, 100)
 		bucks = givebucks(buckslist, level, 11, bucks, 100)
 		bucks = givebucks(buckslist, level, 9, bucks, 75)
+		bucks = givebucks(buckslist, level, 8, bucks, 100)
 		bucks += 50
 		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
 	except: pass
@@ -519,20 +516,20 @@ while True:
 				
 				if exitrect.collidepoint(event.pos): exit()
 				if optionsrect.collidepoint(event.pos):
-					play("batsound.mp3", volume)
+					
 					pygame.display.set_caption('Baseball Game -- Options')
 					
 					start = True
 					optionsmenu = True
 				if derbyrect.collidepoint(event.pos):
-					play("batsound.mp3", volume)
+					
 					pygame.display.set_caption('Baseball Game -- Derby')
 					
 					start_ticks = pygame.time.get_ticks()
 					start = True
 					startderby = True
 				if playrect.collidepoint(event.pos):
-					play("batsound.mp3", volume)
+					
 					pygame.display.set_caption('Baseball Game -- Play')
 					start_ticks = pygame.time.get_ticks()
 					start = True
@@ -997,12 +994,12 @@ while True:
 						
 						bat_sprite = pygame.transform.rotate(bat_sprite, 150)
 					if bally >= 298 and bally <= 304:
-						play("batsound.mp3", volume)
+						
 						hit_type = 1
 						hit = True
 					if bally >= 277 and bally <= 297:
 						rand23 = random.randint(1,3)
-						play("batsound.mp3", volume)
+						
 						if rand23 == 1:
 							hit_type = 3
 							hit = True
@@ -1010,7 +1007,7 @@ while True:
 							hit_type = 2
 							hit = True
 					if bally >= 305 and bally <= 318:
-						play("batsound.mp3", volume)
+						
 						rand23 = random.randint(1,7)
 						if rand23 == 7:
 							hit_type = 7
@@ -1521,7 +1518,9 @@ while True:
 					
 					screen.blit(bucksicon75, [-35 + i * 135, 70])
 					
-				
+				if a == 8:
+					
+					screen.blit(bucksicon100, [-75 + i * 135, 70])
 				
 				
 				

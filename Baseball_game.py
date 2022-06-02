@@ -62,20 +62,33 @@ def opensave():
 
 
 
-
-def save(ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist):
+def save(list):
 	with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-		list = "[" + str(ball) + ", " + str(bat) + ", " + str(field) + ", " + str(xp) + ", " + str(bucks) + ", " + str(balllist) + ", " + str(batlist) + ", " + str(fieldlist) + ", " + str(buckslist) + "]"
-		data = str(list)
-		
+		data = str([ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist])
 		data = base64.b64encode(data.encode("utf-8"))
 		data = str(data, "utf-8")
-
-		
 		save.write(data)
 		save.close()
+	return
+
+
+
+
+# def save(ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist):
+#     with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
+# 		list = "[" + str(ball) + ", " + str(bat) + ", " + str(field) + ", " + str(xp) + ", " + str(bucks) + ", " + str(balllist) + ", " + str(batlist) + ", " + str(fieldlist) + ", " + str(buckslist) + "]"
+# 		data = str(list)
 	
-		return
+# 		data = base64.b64encode(data.encode("utf-8"))
+# 		data = str(data, "utf-8")
+
+	
+# 		save.write(data)
+# 		save.close()
+
+# 	return
+
+
 
 
 ratelimit = False
@@ -352,7 +365,7 @@ while True:
 		bucks = givebucks(buckslist, level, 9, bucks, 75)
 		bucks = givebucks(buckslist, level, 8, bucks, 100)
 		bucks += 50
-		save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+		save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 	except: pass
 	pygame.mouse.set_visible(True) 
 	pygame.display.set_caption('Baseball Game -- Menu')
@@ -578,7 +591,7 @@ while True:
 				xp += math.floor(int(doubles) * doublesscoring)
 				xp += math.floor(int(homeruns) * homerunsscoring)
 				xp += forplayingscoring
-				save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+				save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 				outs = 0
 				startplay = False
 				start = False
@@ -851,7 +864,7 @@ while True:
 
 				xp += math.floor(int(homeruns) * derbyhomerunsscoring)
 				xp += forplayingscoring
-				save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+				save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 
 			timertext = font_style.render("60.00", True, black)
 			screen.blit(timertext, [dis_width - 85, dis_height - 400])
@@ -1332,7 +1345,7 @@ while True:
 					
 
 					
-					save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+					save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 					
 					ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
@@ -1355,7 +1368,7 @@ while True:
 	
 		while shopback == False:
 			
-			#save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+			#save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
 			if shoppage < 3:
 				screen.blit(right_arrow, [500, 300])
@@ -1426,12 +1439,12 @@ while True:
 						if shoppage == 1: bucks, balllist = buy("smileball", bucks, 100, balllist)
 						if shoppage == 2: bucks, batlist = buy("axebat", bucks, 100, batlist)
 						if shoppage == 3: bucks, batlist = buy("roseball", bucks, 100, batlist)
-						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+						save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 					if oddbuyrect.collidepoint(event.pos):
 						if shoppage == 1: bucks, balllist = buy("baseballball", bucks, 100, balllist)
 						if shoppage == 2: bucks, balllist = buy("roseball", bucks, 100, balllist)
 						if shoppage == 3: bucks, balllist = buy("roseball", bucks, 100, balllist)
-						save(balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist)
+						save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 					
 				if event.type == pygame.QUIT:
 					exit()

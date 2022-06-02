@@ -71,24 +71,6 @@ def save(list):
 
 
 
-
-# def save(ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist):
-#     with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-# 		list = "[" + str(ball) + ", " + str(bat) + ", " + str(field) + ", " + str(xp) + ", " + str(bucks) + ", " + str(balllist) + ", " + str(batlist) + ", " + str(fieldlist) + ", " + str(buckslist) + "]"
-# 		data = str(list)
-	
-# 		data = base64.b64encode(data.encode("utf-8"))
-# 		data = str(data, "utf-8")
-
-	
-# 		save.write(data)
-# 		save.close()
-
-# 	return
-
-
-
-
 ratelimit = False
 ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = opensave()
 
@@ -97,8 +79,8 @@ batlist = ast.literal_eval(str(batlist))
 fieldlist = ast.literal_eval(str(fieldlist))
 buckslist = ast.literal_eval(str(buckslist))
 
-if random.randint(0, 1) == 1: ABK = "+" + str(round(random.uniform(1.02, 4.24), 2)) + "%"
-else: ABK = "-" + str(round(random.uniform(2.64, 0.16), 2)) + "%"
+if random.randint(0, 1) == 1: ABK = "+" + str(round(random.uniform(1.06, 4.24), 2)) + "%"
+else: ABK = "-" + str(round(random.uniform(2.34, 0.16), 2)) + "%"
 
 
 
@@ -170,8 +152,8 @@ if internet == True:
 		try:
 			urllib.request.urlretrieve(url, filename = folderpath + r"//Baseball.Game.zip")
 		except ConnectionAbortedError: raise Exception("Don't change your internet while file is downloading")
-		import zipfile
-		with zipfile.ZipFile(folderpath + "\\Baseball.Game.zip", 'r') as zip_ref:
+		from zipfile import ZipFile
+		with ZipFile(folderpath + "\\Baseball.Game.zip", 'r') as zip_ref:
 			os.rename(folderpath + "\\Baseball_game.exe", folderpath + "\\gamefiles\\Old_Baseball_game.exe")
 			
 			zip_ref.extractall(folderpath + "\\gamefiles\\updateunpack")
@@ -205,10 +187,11 @@ if internet == True:
 
 
 if os.path.exists(folderpath + "\\gamefiles\\cache.txt") == False:
-	os.rename(folderpath + "\\gamefiles\\updateunpack\\gamefiles\\cache.txt", folderpath + "\\gamefiles\\cache.txt")
-with open(folderpath + "\\gamefiles\\cache.txt", "r") as cachefile:
-	response = str(cachefile.read())
-	cachefile.close()
+	os.mkfile(folderpath + "\\gamefiles\\cache.txt")
+else:
+	with open(folderpath + "\\gamefiles\\cache.txt", "r") as cachefile:
+		response = str(cachefile.read())
+		cachefile.close()
 with open(folderpath + "\\gamefiles\\hplay.json", "r") as hjson:
 	file = hjson.read()
 	hjson.close()
@@ -263,7 +246,6 @@ dis_height = 400
 
 pygame.init()
 screen = pygame.display.set_mode((dis_width, dis_height))
-
 releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []
@@ -314,9 +296,9 @@ field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
 #bat_sprite = pygame.transform.scale(bat_sprite, (20, 70)) #size of bat  old: 15, 70
 shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
-
+font = pygame.font.SysFont(None, 40)
 def message_to_screen(msg, color, size, x, y):
-	font = pygame.font.SysFont(None, size)
+
 	screen_text = font.render(msg, True, color)
 	screen.blit(screen_text, [x, y])
 
@@ -327,7 +309,7 @@ small_font = pygame.font.SysFont("Mochiy Pop One", 20)
 big_font = pygame.font.SysFont("Mochiy Pop One", 40)
 verybig_font = pygame.font.SysFont("Mochiy Pop One", 70)
 #mesg = font_style.render("", True, red)
-
+space2swing = small_font.render("Press space to swing", True, black)
 #menuplace = 1
 start, openreleasenotes = False, False
 clock = pygame.time.Clock()
@@ -370,7 +352,7 @@ while True:
 	pygame.display.set_caption('Baseball Game -- Menu')
 	while start == False:
 		
-		mesg = font_style.render("", True, red)
+		mesg = ""
 		endtimer,outs = 0, 0
 		ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 		ball_sprite = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
@@ -566,11 +548,11 @@ while True:
 		pygame.mouse.set_visible(False) #########
 		screen.blit(field_sprite, (0, 0))
 		
-		space2swing = small_font.render("Press space to swing", True, black)
 		screen.blit(space2swing, [dis_width / 6 + 260, dis_height / 3 + 250])
 		screen.blit(ball_sprite, (ballx, bally))
 		screen.blit(bat_sprite, (batx, baty))
-
+		if mesg != "":
+			message_to_screen(str(mesg), (0, 0, 0), "sus", 5, 340)
 
 
 
@@ -630,9 +612,8 @@ while True:
 
 		   
 			
-			
-
-		screen.blit(mesg, [dis_width / 2 + 125, dis_height / 2])
+		
+		#screen.blit(mesg, [dis_width / 2 + 125, dis_height / 2])
 		
 		
 		if hit == False:
@@ -655,7 +636,7 @@ while True:
 				if runner != 0:
 					runner = 0
 					runs += 1
-					mesg = font_style.render("Home Run!", True, red)
+					mesg = "Home Run!"
 				
 					
 				
@@ -669,22 +650,22 @@ while True:
 						runner = 0
 						runs += 1
 						
-					mesg = font_style.render("Double!", True, red)
-					screen.blit(mesg, [dis_width / 6, dis_height / 3])
+					mesg = "Double!"
+					#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 					
 				
 				if randhit2 == 3 or randhit2 == 4:
 					
-					mesg = font_style.render("Caught!", True, red)
-					screen.blit(mesg, [dis_width / 6, dis_height / 3])
+					mesg = "Caught!"
+					#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 					outs += 1
 					
 				
 					
 				if randhit2 == 5:
 					
-					mesg = font_style.render("Single!", True, red)
-					screen.blit(mesg, [dis_width / 6, dis_height / 3])
+					mesg = "Single!"
+					#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 					runner += 1
 					singles += 1
 					if runner >= 4:
@@ -694,14 +675,14 @@ while True:
 					
 			if hit_type == 3 or hit_type == 5:
 				
-				mesg = font_style.render("Caught!", True, red)
-				screen.blit(mesg, [dis_width / 6, dis_height / 3])
+				mesg = "Caught!"
+				#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 				outs += 1
 			if hit_type == 7:
 				
 				strikes += 1
-				mesg = font_style.render("Foul!", True, red)
-				screen.blit(mesg, [dis_width / 6, dis_height / 3])
+				mesg = "Foul!"
+				#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 				
 
 			bally = 100
@@ -713,7 +694,7 @@ while True:
 			hit = False
 			firstswing = True
 		
-			screen.blit(mesg, [dis_width / 6, dis_height / 3])
+			#screen.blit(mesg, [dis_width / 6, dis_height / 3])
 			
 
 		if hit == True:
@@ -842,18 +823,17 @@ while True:
 			homeruns -= 350
 		
 		
-		homeruntext = med_font.render("HomeRuns : " + str(homeruns), True, black)
-		screen.blit(homeruntext, [dis_width - 600, dis_height - 400])
-		besthomeruntext = med_font.render("Best : " + str(highderbyhomeruns), True, black)
-		screen.blit(besthomeruntext, [dis_width - 600, dis_height - 380])
-		space2swing = small_font.render("Press space to swing", True, black)
+		#homeruntext = med_font.render("HomeRuns : " + str(homeruns), True, black)
+		#screen.blit(homeruntext, [dis_width - 600, dis_height - 400])
+		#besthomeruntext = med_font.render("Best : " + str(highderbyhomeruns), True, black)
+		#screen.blit(besthomeruntext, [dis_width - 600, dis_height - 380])
 		screen.blit(space2swing, [dis_width / 6 + 260, dis_height / 3 + 250])
 		screen.blit(ball_sprite, (ballx, bally))
 		screen.blit(bat_sprite, (batx, baty))
 		if float(seconds) >= 60:
 			endtimer += 1
 
-			if endtimer >= 170:
+			if endtimer >= 70:
 
 				startderby = False
 				start = False
@@ -1454,6 +1434,7 @@ while True:
 		while battlepass == False:
 			screen.fill(white)
 			screen.blit(optionsmenustatsback_sprite, (-50, 50))
+			
 			for i in range(1,5):
 
 				a = page * 4 + i - 4

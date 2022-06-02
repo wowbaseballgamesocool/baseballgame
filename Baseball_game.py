@@ -1,16 +1,15 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
-
 #from PIL import Image, ImageSequence
 folderpath = os.getcwd()
 version = "1.3"
 # make sure version is the same as github tag
 
 
-forplayingscoring = 15
-derbyhomerunsscoring = 3.2
+forplayingscoring = 13
+derbyhomerunsscoring = 3.5
 homerunsscoring = 2.8
-singlesscoring = 1.6
-doublesscoring = 2.6
+singlesscoring = 1.8
+doublesscoring = 2.7
 
 def weeks():
 	year, week, day = datetime.date.today().isocalendar(); week += 4
@@ -53,7 +52,6 @@ def opensave():
 	elif data != "" and data != None and data != "b'WzAsIDAsIDAsIDBd'":
 		data = data.strip("b''")
 		while len(data)%4 != 0: data += "="
-		
 		data = base64.b64decode(data)
 		data = str(data, "utf-8")
 		data = ast.literal_eval(data)
@@ -118,7 +116,8 @@ splashmessage = random.choice([
 								#"Switch Port?" # the 'rt?' part looks funny
 								"What were YOU expecting?",
 								"ABK Stock " + ABK,
-								#"   ono my skirt *   -rick" # nah
+								#"   ono my skirt *   -rick", # nah
+								"pls enjoy game"
 								#""
 								#""
 							])
@@ -145,7 +144,7 @@ except: pass
 try: 
 	response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases")
 	latestversion = response.json()[0]["tag_name"].strip("v")
-	if latestversion == "1.2.1": raise Exception("Github pulled wrong version")
+	if latestversion == "1.2.1": raise Exception("Github returned wrong version")
 	with open(folderpath + "/gamefiles/cache.txt", "w") as file:
 		file.write(str(response.json())); file.close()
 except Exception as e:
@@ -170,7 +169,7 @@ if internet == True:
 		url = "https://github.com/wowbaseballgamesocool/baseballgame/releases/download/" + str(latestversion) + "//Baseball.Game.zip"
 		try:
 			urllib.request.urlretrieve(url, filename = folderpath + r"//Baseball.Game.zip")
-		except: ConnectionAbortedError: print("Don't change your internet while file is downloading")
+		except ConnectionAbortedError: raise Exception("Don't change your internet while file is downloading")
 		import zipfile
 		with zipfile.ZipFile(folderpath + "\\Baseball.Game.zip", 'r') as zip_ref:
 			os.rename(folderpath + "\\Baseball_game.exe", folderpath + "\\gamefiles\\Old_Baseball_game.exe")

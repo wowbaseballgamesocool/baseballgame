@@ -1,9 +1,11 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
-#from PIL import Image, ImageSequence
 folderpath = os.getcwd()
 version = "1.3"
 # make sure version is the same as github tag
-
+pygame.init()
+dis_width = 600
+dis_height = 400
+screen = pygame.display.set_mode((dis_width, dis_height))
 
 forplayingscoring = 13
 derbyhomerunsscoring = 3.5
@@ -27,10 +29,9 @@ def give(asset, list, level, unlocktier):
 		if asset not in list: list.append(asset)
 
 def givebucks(list, level, unlocktier, bucks, togive):
-	if level >= unlocktier:
-		if unlocktier not in list and unlocktier not in ["", ""]:
-			list.append(unlocktier)
-			bucks += togive
+	if level >= unlocktier and unlocktier not in list:
+		list.append(unlocktier)
+		bucks += togive
 	return bucks
 			
 def buy(asset, bucks, cost, list):
@@ -39,11 +40,45 @@ def buy(asset, bucks, cost, list):
 			list.append(asset)
 			return bucks-cost, list
 	return bucks, list
+font = pygame.font.SysFont("Mochiy Pop One", 30)
+bouncetext = font.render(str(weeks()) + " Weeks", True, (100, 100, 100))
+x = -50
+bouncemode = 1
+direction = 0, 0
+def bounce(x, bouncemode):# bounces text off the screen 
+
 	
 
+	if x >= dis_width - 95:
+		x -= 50
+		bouncemode = 1
 
 
-def opensave():
+	elif x <= 0:
+		x += 50
+		bouncemode = 2
+	else:
+		if bouncemode == 1:
+			x -= 20
+		else:
+			x += 20
+	screen.blit(bouncetext, (x, 10))
+
+	return x, bouncemode
+
+
+
+
+
+def save(sus=None):
+	if sus != "sus":
+		with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
+			data = str([ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist])
+			data = base64.b64encode(data.encode("utf-8"))
+			data = str(data, "utf-8")
+			save.write(data)
+			save.close()
+		return
 	with open(folderpath + "\\gamefiles\\save.txt", "r") as save:
 		data = save.read()
 		save.close()
@@ -57,22 +92,15 @@ def opensave():
 		data = ast.literal_eval(data)
 	else: data = [0, 0, 0, 0, 0, "['ball']", "['bat']", "['field']", "[0]"]
 	return data
-
-
-
-def save(list):
-	with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-		data = str([ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist])
-		data = base64.b64encode(data.encode("utf-8"))
-		data = str(data, "utf-8")
-		save.write(data)
-		save.close()
+	
+	
+	
 	return
 
 
 
 ratelimit = False
-ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = opensave()
+ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = save("sus")
 
 balllist = ast.literal_eval(str(balllist))
 batlist = ast.literal_eval(str(batlist))
@@ -89,7 +117,7 @@ splashmessage = random.choice([
 								"Now on PS4!",
 								#"A line and a ball * and they dont even rotate!",
 								#"Better than real baseball!",
-								weeks() + " weeks!",
+								#weeks() + " weeks!",
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
@@ -99,7 +127,8 @@ splashmessage = random.choice([
 								"What were YOU expecting?",
 								"ABK Stock " + ABK,
 								#"   ono my skirt *   -rick", # nah
-								"pls enjoy game"
+								"pls enjoy game",
+								"how's ben?"
 								#""
 								#""
 							])
@@ -214,7 +243,7 @@ jsonfile = json.loads(file)
 volume = int(jsonfile["settings"]["volume"])
 
 
-data = opensave()
+data = save("sus")
 
 
 balllistnumber = data[0]
@@ -241,11 +270,9 @@ black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
-dis_width = 600
-dis_height = 400
 
-pygame.init()
-screen = pygame.display.set_mode((dis_width, dis_height))
+
+
 releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []
@@ -377,7 +404,7 @@ while True:
 		screen.blit(menubg_sprite, (0, 0))
 		
 		
-
+		x, bouncemode = bounce(x, bouncemode)
 
 
 		#splashscreen
@@ -1044,12 +1071,12 @@ while True:
 				if shoprect.collidepoint(event.pos): shopback = False; screen.fill(white)
 				if battlepassrect.collidepoint(event.pos): 
 					battlepass = False
-					data = opensave()
+					data = save("sus")
 					xp = data[3]
 					
 				if assetrect.collidepoint(event.pos): 
 					asset = False
-					ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = opensave()
+					ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = save("sus")
 
 					balllist = ast.literal_eval(str(balllist))
 					batlist = ast.literal_eval(str(batlist))
@@ -1123,103 +1150,6 @@ while True:
 					
 			pygame.display.update()
 			
-		while settingsback == False:
-			
-
-
-
-
-			screen.blit(optionsmenustatsback_sprite, (0, 0))
-
-
-			settingstitle = big_font.render("Settings", True, black)
-			screen.blit(settingstitle, [dis_width - 300, dis_height - 395])
-			mesg11 = med_font.render("Volume      " + str(volume), True, black)
-			screen.blit(mesg11, [dis_width - 595, dis_height - 370])
-			
-			
-			
-			
-				
-			volume = round(volume, 1)
-			sfxvolume = round(sfxvolume, 1)
-
-
-
-
-
-
-
-			for event in pygame.event.get():
-				
-				if event.type == pygame.QUIT:
-					exit()
-				if event.type == pygame.KEYDOWN:
-					
-					if event.key == pygame.K_UP:
-						menuplace -= 1
-						if menuplace <= 0:
-							menuplace = 2
-					if event.key == pygame.K_DOWN:
-						menuplace += 1
-						if menuplace >= 3:
-							menuplace = 1
-					
-					if event.key == pygame.K_RIGHT:
-						
-						if menuplace == 1:
-							
-							volume += 0.1
-							
-							if volume > 1.0:
-								volume = 1.0
-							#mixer.music.set_volume(volume)
-						if menuplace == 2:
-							sfxvolume += 0.1
-							if sfxvolume > 1.0:
-								sfxvolume = 1.0
-							#mixer.music.set_volume(volume)
-						
-					if event.key == pygame.K_LEFT:
-						if menuplace == 1:
-							volume -= 0.1
-						if volume < 0.0:
-							volume = 0.0
-						#mixer.music.set_volume(volume)
-
-						if menuplace == 2:
-							sfxvolume -= 0.1
-							if sfxvolume < 0.0:
-								sfxvolume = 0.0
-
-					
-					
-					if event.key == pygame.K_SPACE:
-						settingsback = True
-						menuplace = 2
-						start = False
-						try:
-					#if True:
-							with open(folderpath + "//gamefiles//settings.json", "r") as settings:
-								jsonfile = settings.read()
-								settings.close()
-							jsonfile = json.loads(jsonfile)
-							jsonfile["settings"]["volume"] = volume
-							jsonfile["settings"]["sfxvolume"] = sfxvolume
-						
-							sfxvolume = float(sfxvolume)
-						
-							with open(folderpath + "\\gamefiles\\settings.json", "w") as savesettings:
-				
-								savesettings.write(json.dumps(jsonfile))
-								savesettings.close()
-						except:
-							print("skipped crash")
-							#del(volume)
-							#del(sfxvolume) # forget vars so we won't update without new data
-							pass
-			
-			pygame.display.update()
 				
 		while asset == False:
 			
@@ -1288,14 +1218,11 @@ while True:
 					
 					
 					
-					if balllistnumber > len(balllist) - 1:
-						balllistnumber = 0
+					if balllistnumber > len(balllist) - 1: balllistnumber = 0
 					if batlistnumber < 0: balllistnumber = len(balllist) - 1
-					if batlistnumber > len(batlist) - 1:
-						batlistnumber = 0
+					if batlistnumber > len(batlist) - 1: batlistnumber = 0
 					if batlistnumber < 0: batlistnumber = len(batlist) - 1
-					if fieldlistnumber > len(fieldlist) - 1:
-						fieldlistnumber = 0
+					if fieldlistnumber > len(fieldlist) - 1: fieldlistnumber = 0
 					if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
 					
 					
@@ -1309,18 +1236,15 @@ while True:
 
 					
 
-					if balllistnumber > len(balllist) - 1:
-						balllistnumber = 0
-					if batlistnumber < 0: balllistnumber = len(balllist) - 1
-					if batlistnumber > len(batlist) - 1:
-						batlistnumber = 0
-					if batlistnumber < 0: batlistnumber = len(batlist) - 1
-					if fieldlistnumber > len(fieldlist) - 1:
-						fieldlistnumber = 0
-					if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
+					#if balllistnumber > len(balllist) - 1: balllistnumber = 0
+					#if batlistnumber < 0: balllistnumber = len(balllist) - 1
+					#if batlistnumber > len(batlist) - 1: batlistnumber = 0
+					#if batlistnumber < 0: batlistnumber = len(batlist) - 1
+					#if fieldlistnumber > len(fieldlist) - 1: fieldlistnumber = 0
+					#if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
 
 
-					data = opensave()
+					#data = save("sus")
 					
 
 					
@@ -1361,7 +1285,7 @@ while True:
 			oddbuyrect = pygame.Rect(80 + 1 * 250, 210, 167, 65)
 
 			screen.blit(bucksicon, (150, 320))
-			bucks_text = splash_font.render(str(opensave()[4]), True, yellow)
+			bucks_text = splash_font.render(str(save("sus")[4]), True, yellow)
 			screen.blit(bucks_text, [175, 360])
 			for i in range(2):
 
@@ -1372,36 +1296,39 @@ while True:
 				#if random.randint(1, 2) == 1:
 					#pygame.draw.rect(screen,red,(buyrect))
 
+								# copilot autofilled the text for you :)
+				# TODO: dont run save() every time you draw the shop screen (it's slow) - only run it when you buy something or when you change pages or when you change the shop page (so you don't have to run it every time you change the shop page)
+
 				if a == 0:
 					smileball = pygame.image.load('gamefiles/assets/balls/smileball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(smileball, (125, 120)), [105 + i * 250, 43])
 					screen.blit(bucksicon100, [135 + i * 250, 130])
-					if "smileball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "smileball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 1:
 					baseballball = pygame.image.load('gamefiles/assets/balls/baseballball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(baseballball, (125, 120)), [105 + i * 250, 43])
-					if "baseballball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "baseballball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 2:
 					axebat = pygame.image.load('gamefiles/assets/bats/axebat.png').convert_alpha()
 					screen.blit(pygame.transform.scale(axebat, (45, 120)), [140 + i * 250, 43])
-					if "axebat" not in opensave()[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "axebat" not in save("sus")[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 3:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 5:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 6:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():

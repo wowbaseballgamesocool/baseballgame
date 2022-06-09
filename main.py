@@ -1154,7 +1154,6 @@ while True:
 		while asset == False:
 			
 			screen.fill(white)
-
 			screen.blit(right_arrow, [375, 25])
 			screen.blit(left_arrow, [100, 25])
 			

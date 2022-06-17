@@ -3,4 +3,4 @@
 env.py
 *.toc
 *spec
-cache.txt
+gamefiles/cache.txt

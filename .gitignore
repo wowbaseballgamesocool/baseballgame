@@ -3,4 +3,7 @@
 env.py
 *.toc
 *spec
-gamefiles/cache.txt
+*/cache.txt
+build/Baseball_game/base_library.zip
+build/Baseball_game/Baseball_game.exe.manifest
+build/Baseball_game/warn-Baseball_game.txt

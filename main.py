@@ -13,6 +13,69 @@ homerunsscoring = 2.8
 singlesscoring = 1.8
 doublesscoring = 2.7
 
+
+
+
+def convert_png_to_base64():
+	strings = ""
+	try:
+		for file in os.listdir(folderpath + "\\gamefiles\\"):
+			if file.endswith(".png"):
+				with open(folderpath + "\\gamefiles\\" + file, "rb") as image_file:
+					encoded_string = base64.b64encode(image_file.read())
+					encoded_string = str(encoded_string, "utf-8")
+					strings = strings + encoded_string + "\n"
+	except FileNotFoundError: raise FileNotFoundError("assets folder not found, do not run this function outside of testing")
+	os.remove(folderpath + "\\gamefiles\\assets\\base64.txt")
+	with open(folderpath + "\\gamefiles\\assets\\base64.txt", "w") as base64file:
+		base64file.write(strings)
+		base64file.close()
+
+
+
+def load_png_from_base64():
+	#convert_png_to_base64()
+	with open(folderpath + "\\gamefiles\\assets\\base64.txt", "r") as base64file:
+		data = base64file.read()
+		base64file.close()
+	data = data.split("\n")
+	for i in range(len(data)):
+		data[i] = base64.b64decode(data[i])
+		try: os.mkdir(folderpath + "\\gamefiles\\temp")
+		except: pass
+		with open(folderpath + "\\gamefiles\\temp\\" + str(i) + ".png", "wb") as image_file:
+			image_file.write(data[i])
+			image_file.close()
+
+	
+	return data
+
+
+def set_up_assets():
+	right_arrow = pygame.image.load(folderpath + "\\gamefiles\\temp\\0.png")
+	assetsback_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\1.png")
+	shopbox = pygame.image.load(folderpath + "\\gamefiles\\temp\\2.png")
+	battlepassboxpast = pygame.image.load(folderpath + "\\gamefiles\\temp\\3.png")
+	battlepassboxpresent = pygame.image.load(folderpath + "\\gamefiles\\temp\\4.png")
+	bucksicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\5.png")
+	bucksicon75 = pygame.image.load(folderpath + "\\gamefiles\\temp\\6.png")
+	bucksicon100 = pygame.image.load(folderpath + "\\gamefiles\\temp\\7.png")
+	buy1 = pygame.image.load(folderpath + "\\gamefiles\\temp\\8.png")
+	buy2 = pygame.image.load(folderpath + "\\gamefiles\\temp\\9.png")
+	menubg_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\10.png")
+	optionsmenu_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\11.png")
+	optionsmenustatsback_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\12.png")
+	releasenotesbg = pygame.image.load(folderpath + "\\gamefiles\\temp\\13.png")
+	xpicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\14.png")
+	shutil.rmtree(folderpath + "\\gamefiles\\temp")
+
+	return right_arrow, assetsback_sprite, shopbox, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon
+
+
+load_png_from_base64()
+right_arrow, assetsback_sprite, shopbox, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon = set_up_assets()
+
+
 def weeks():
 	year, week, day = datetime.date.today().isocalendar(); week += 4
 	for i in range(year - 2022): week += 52
@@ -33,7 +96,7 @@ def givebucks(list, level, unlocktier, bucks, togive):
 		list.append(unlocktier)
 		bucks += togive
 	return bucks
-			
+
 def buy(asset, bucks, cost, list):
 	if bucks >= cost:
 		if asset not in list: 
@@ -128,7 +191,7 @@ splashmessage = random.choice([
 								"ABK Stock " + ABK,
 								#"   ono my skirt *   -rick", # nah
 								"pls enjoy game",
-								"how's ben?"
+								#"how's ben?"
 								#""
 								#""
 							])
@@ -156,6 +219,7 @@ try:
 	response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases")
 	latestversion = response.json()[0]["tag_name"].strip("v")
 	if latestversion == "1.2.1": raise Exception("Github returned wrong version")
+	elif latestversion == "1.3" and version != "1.3": raise Exception("Github returned wrong version")
 	with open(folderpath + "/gamefiles/cache.txt", "w") as file:
 		file.write(str(response.json())); file.close()
 except Exception as e:
@@ -282,15 +346,12 @@ fps, averagefps = 0, 0
 altaltsplashmessage = ""
 pygame.display.set_caption('Baseball Game')
 
-# def refresh_sprites(): 
+
 
 ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 ball_sprite = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
-menubg_sprite = pygame.image.load('gamefiles/assets/menubg.png').convert_alpha()
-menuplay_sprite = pygame.image.load('gamefiles/assets/menuplay.png').convert_alpha()
-menuderby_sprite = pygame.image.load('gamefiles/assets/menuderby.png').convert_alpha()
-menuoptions_sprite = pygame.image.load('gamefiles/assets/menuoptions.png').convert_alpha()
-menuexit_sprite = pygame.image.load('gamefiles/assets/menuexit.png').convert_alpha()
+#menubg_sprite = pygame.image.load('gamefiles/assets/menubg.png').convert_alpha()
+
 out0_sprite = pygame.image.load('gamefiles/assets/outs/0outs.png').convert_alpha()
 out0_sprite = pygame.transform.scale(out0_sprite, (95, 30)) #size of text
 out1_sprite = pygame.image.load('gamefiles/assets/outs/1outs.png').convert_alpha()
@@ -299,29 +360,25 @@ out2_sprite = pygame.image.load('gamefiles/assets/outs/2outs.png').convert_alpha
 out2_sprite = pygame.transform.scale(out2_sprite, (95, 30)) #size of text
 out3_sprite = pygame.image.load('gamefiles/assets/outs/3outs.png').convert_alpha()
 out3_sprite = pygame.transform.scale(out3_sprite, (95, 30)) #size of text
-optionsmenu_sprite = pygame.image.load('gamefiles/assets/optionsmenu.png').convert_alpha()
-optionsmenustats_sprite = pygame.image.load('gamefiles/assets/optionsmenustats.png').convert_alpha()
-optionsmenusettings_sprite = pygame.image.load('gamefiles/assets/optionsmenusettings.png').convert_alpha()
-optionsmenustatsback_sprite = pygame.image.load('gamefiles/assets/optionsmenustatsback.png').convert_alpha()
-assetsback_sprite = pygame.image.load('gamefiles/assets/assetsback.png').convert_alpha()
-optionsmenuback_sprite = pygame.image.load('gamefiles/assets/optionsmenuback.png').convert_alpha()
-releasenotesbg = pygame.image.load('gamefiles/assets/releasenotesbg.png').convert_alpha()
-battlepassboxpast = pygame.image.load('gamefiles/assets/battlepassboxpast.png').convert_alpha()
-battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.png').convert_alpha()
-battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
-xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
-bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
-bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
-bucksicon75 = pygame.image.load('gamefiles/assets/bucks75.png').convert_alpha()
-right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
-buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
-buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
+#optionsmenu_sprite = pygame.image.load('gamefiles/assets/optionsmenu.png').convert_alpha()
+
+#optionsmenustatsback_sprite = pygame.image.load('gamefiles/assets/optionsmenustatsback.png').convert_alpha()
+#assetsback_sprite = pygame.image.load('gamefiles/assets/assetsback.png').convert_alpha()
+#releasenotesbg = pygame.image.load('gamefiles/assets/releasenotesbg.png').convert_alpha()
+#battlepassboxpast = pygame.image.load('gamefiles/assets/battlepassboxpast.png').convert_alpha()
+#battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.png').convert_alpha()
+#battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
+#xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
+#bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
+#bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+#bucksicon75 = pygame.image.load('gamefiles/assets/bucks75.png').convert_alpha()
+#right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
+#buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
+#buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
 left_arrow = pygame.transform.rotate(right_arrow, 180)
 field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
 field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
-#bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
-#bat_sprite = pygame.transform.scale(bat_sprite, (20, 70)) #size of bat  old: 15, 70
-shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
+#shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
 font = pygame.font.SysFont(None, 40)
 def message_to_screen(msg, color, size, x, y):
@@ -372,7 +429,6 @@ while True:
 		bucks = givebucks(buckslist, level, 11, bucks, 100)
 		bucks = givebucks(buckslist, level, 9, bucks, 75)
 		bucks = givebucks(buckslist, level, 8, bucks, 100)
-		bucks += 50
 		save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 	except: pass
 	pygame.mouse.set_visible(True) 
@@ -543,14 +599,14 @@ while True:
 					start = True
 					optionsmenu = True
 				if derbyrect.collidepoint(event.pos):
-					
+					pygame.mouse.set_visible(False)
 					pygame.display.set_caption('Baseball Game -- Derby')
 					
 					start_ticks = pygame.time.get_ticks()
 					start = True
 					startderby = True
 				if playrect.collidepoint(event.pos):
-					
+					pygame.mouse.set_visible(False)
 					pygame.display.set_caption('Baseball Game -- Play')
 					start_ticks = pygame.time.get_ticks()
 					start = True
@@ -571,8 +627,6 @@ while True:
 
 
 		
-
-		pygame.mouse.set_visible(False) #########
 		screen.blit(field_sprite, (0, 0))
 		
 		screen.blit(space2swing, [dis_width / 6 + 260, dis_height / 3 + 250])
@@ -995,11 +1049,8 @@ while True:
 				
 				fpslist.append(fps)
 				fps = 0
-			if event.type == updateevent: 
-				pygame.mouse.set_visible(False)
-				#pygame.display.set_caption('Baseball Game  -- Derby   ' + str(seconds) + "   " + str(homeruns) + " hrs")
+
 			if event.type == pygame.QUIT:
-				
 				exit()
 						
 			if event.type == pygame.KEYDOWN:
@@ -1165,12 +1216,7 @@ while True:
 			
 			
 			
-			screen.blit(pygame.transform.scale(ball_display, (80, 80)), [240, 20])
-			screen.blit(pygame.transform.scale(bat_display, (40, 140)), [260, 125])
-			
-			screen.blit(pygame.transform.scale(field_display, (150, 105)), [210, 275])
-			
-			screen.blit(assetsback_sprite, [0, 0])
+
 			
 			
 			rightballrect = pygame.Rect(375, 25, 100, 100)
@@ -1187,6 +1233,10 @@ while True:
 			for event in pygame.event.get():
 
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					screen.blit(pygame.transform.scale(ball_display, (80, 80)), [240, 20])
+					screen.blit(pygame.transform.scale(bat_display, (40, 140)), [260, 125])
+					screen.blit(pygame.transform.scale(field_display, (150, 105)), [210, 275])
+					screen.blit(assetsback_sprite, [0, 0])
 				
 					if leftballrect.collidepoint(event.pos):
 						
@@ -1233,17 +1283,7 @@ while True:
 					ball_display = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_display = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
 
-					
 
-					#if balllistnumber > len(balllist) - 1: balllistnumber = 0
-					#if batlistnumber < 0: balllistnumber = len(balllist) - 1
-					#if batlistnumber > len(batlist) - 1: batlistnumber = 0
-					#if batlistnumber < 0: batlistnumber = len(batlist) - 1
-					#if fieldlistnumber > len(fieldlist) - 1: fieldlistnumber = 0
-					#if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
-
-
-					#data = save("sus")
 					
 
 					

@@ -5,6 +5,8 @@ def run_command(command):
     process = subprocess.Popen(command, shell=True)
     process.wait()
 while True:
+    try: os.remove(folderpath + '//Baseball_game.exe')
+    except: pass
     run_command('pyminify main.py --output Baseball_game.py')
     run_command('pyinstaller Baseball_game.py --onefile --noconfirm --log-level ERROR')
     try: 
@@ -13,9 +15,7 @@ while True:
     except FileNotFoundError:
         if os.path.isfile('Baseball_game.py') == False: run_command("pip install python-minifier")
         elif os.path.isfile("dist//main.exe") == False: run_command("pip install pyinstaller")
-    except FileExistsError:
-        os.remove(folderpath + '//Baseball_game.exe')
-        continue
+
 for file in ['//Baseball_game.py', '//dist', '//build', '//Baseball_game.spec']:
     try:
         if os.path.isfile(folderpath + file): os.remove(folderpath + file)

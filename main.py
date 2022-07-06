@@ -54,7 +54,7 @@ def load_png_from_base64():
 def set_up_assets():
 	right_arrow = pygame.image.load(folderpath + "\\gamefiles\\temp\\0.png")
 	assetsback_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\1.png")
-	shopbox = pygame.image.load(folderpath + "\\gamefiles\\temp\\2.png")
+	battlepassboxfuture = pygame.image.load(folderpath + "\\gamefiles\\temp\\2.png")
 	battlepassboxpast = pygame.image.load(folderpath + "\\gamefiles\\temp\\3.png")
 	battlepassboxpresent = pygame.image.load(folderpath + "\\gamefiles\\temp\\4.png")
 	bucksicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\5.png")
@@ -69,11 +69,11 @@ def set_up_assets():
 	xpicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\14.png")
 	shutil.rmtree(folderpath + "\\gamefiles\\temp")
 
-	return right_arrow, assetsback_sprite, shopbox, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon
+	return right_arrow, assetsback_sprite, battlepassboxfuture, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon
 
 
 load_png_from_base64()
-right_arrow, assetsback_sprite, shopbox, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon = set_up_assets()
+right_arrow, assetsback_sprite, battlepassboxfuture, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon = set_up_assets()
 
 
 def weeks():
@@ -378,7 +378,7 @@ out3_sprite = pygame.transform.scale(out3_sprite, (95, 30)) #size of text
 left_arrow = pygame.transform.rotate(right_arrow, 180)
 field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
 field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
-#shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
+shopbox = pygame.transform.scale(battlepassboxfuture, (220, 180))
 
 font = pygame.font.SysFont(None, 40)
 def message_to_screen(msg, color, size, x, y):

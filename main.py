@@ -1,79 +1,22 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
+# TODO:
+# fix home run not showing in play (fixed)
+# add new hit display to derby
+# add buck collection after games (done)
+
 folderpath = os.getcwd()
 version = "1.3"
 # make sure version is the same as github tag
-pygame.init()
-dis_width = 600
-dis_height = 400
-screen = pygame.display.set_mode((dis_width, dis_height))
+ITEM_SHOP_ENABLED = False
+# locks shop button and buck collection (except from bp cause it might ruin saves)
 
 forplayingscoring = 13
 derbyhomerunsscoring = 3.5
 homerunsscoring = 2.8
 singlesscoring = 1.8
 doublesscoring = 2.7
-
-
-
-
-def convert_png_to_base64():
-	strings = ""
-	try:
-		for file in os.listdir(folderpath + "\\gamefiles\\"):
-			if file.endswith(".png"):
-				with open(folderpath + "\\gamefiles\\" + file, "rb") as image_file:
-					encoded_string = base64.b64encode(image_file.read())
-					encoded_string = str(encoded_string, "utf-8")
-					strings = strings + encoded_string + "\n"
-	except FileNotFoundError: raise FileNotFoundError("assets folder not found, do not run this function outside of testing")
-	os.remove(folderpath + "\\gamefiles\\assets\\base64.txt")
-	with open(folderpath + "\\gamefiles\\assets\\base64.txt", "w") as base64file:
-		base64file.write(strings)
-		base64file.close()
-
-
-
-def load_png_from_base64():
-	#convert_png_to_base64()
-	with open(folderpath + "\\gamefiles\\assets\\base64.txt", "r") as base64file:
-		data = base64file.read()
-		base64file.close()
-	data = data.split("\n")
-	for i in range(len(data)):
-		data[i] = base64.b64decode(data[i])
-		try: os.mkdir(folderpath + "\\gamefiles\\temp")
-		except: pass
-		with open(folderpath + "\\gamefiles\\temp\\" + str(i) + ".png", "wb") as image_file:
-			image_file.write(data[i])
-			image_file.close()
-
-	
-	return data
-
-
-def set_up_assets():
-	right_arrow = pygame.image.load(folderpath + "\\gamefiles\\temp\\0.png")
-	assetsback_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\1.png")
-	battlepassboxfuture = pygame.image.load(folderpath + "\\gamefiles\\temp\\2.png")
-	battlepassboxpast = pygame.image.load(folderpath + "\\gamefiles\\temp\\3.png")
-	battlepassboxpresent = pygame.image.load(folderpath + "\\gamefiles\\temp\\4.png")
-	bucksicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\5.png")
-	bucksicon75 = pygame.image.load(folderpath + "\\gamefiles\\temp\\6.png")
-	bucksicon100 = pygame.image.load(folderpath + "\\gamefiles\\temp\\7.png")
-	buy1 = pygame.image.load(folderpath + "\\gamefiles\\temp\\8.png")
-	buy2 = pygame.image.load(folderpath + "\\gamefiles\\temp\\9.png")
-	menubg_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\10.png")
-	optionsmenu_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\11.png")
-	optionsmenustatsback_sprite = pygame.image.load(folderpath + "\\gamefiles\\temp\\12.png")
-	releasenotesbg = pygame.image.load(folderpath + "\\gamefiles\\temp\\13.png")
-	xpicon = pygame.image.load(folderpath + "\\gamefiles\\temp\\14.png")
-	shutil.rmtree(folderpath + "\\gamefiles\\temp")
-
-	return right_arrow, assetsback_sprite, battlepassboxfuture, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon
-
-
-load_png_from_base64()
-right_arrow, assetsback_sprite, battlepassboxfuture, battlepassboxpast, battlepassboxpresent, bucksicon, bucksicon75, bucksicon100, buy1, buy2, menubg_sprite, optionsmenu_sprite, optionsmenustatsback_sprite, releasenotesbg, xpicon = set_up_assets()
+derbyhomerunsbucks = 5.2
+homerunsbucks = 8.8
 
 
 def weeks():
@@ -92,56 +35,23 @@ def give(asset, list, level, unlocktier):
 		if asset not in list: list.append(asset)
 
 def givebucks(list, level, unlocktier, bucks, togive):
-	if level >= unlocktier and unlocktier not in list:
-		list.append(unlocktier)
-		bucks += togive
+	if level >= unlocktier:
+		if unlocktier not in list:
+			list.append(unlocktier)
+			bucks += togive
 	return bucks
-
+			
 def buy(asset, bucks, cost, list):
 	if bucks >= cost:
 		if asset not in list: 
 			list.append(asset)
 			return bucks-cost, list
 	return bucks, list
-font = pygame.font.SysFont("Mochiy Pop One", 30)
-bouncetext = font.render(str(weeks()) + " Weeks", True, (100, 100, 100))
-x = -50
-bouncemode = 1
-direction = 0, 0
-def bounce(x, bouncemode):# bounces text off the screen 
-
 	
 
-	if x >= dis_width - 95:
-		x -= 50
-		bouncemode = 1
 
 
-	elif x <= 0:
-		x += 50
-		bouncemode = 2
-	else:
-		if bouncemode == 1:
-			x -= 20
-		else:
-			x += 20
-	screen.blit(bouncetext, (x, 10))
-
-	return x, bouncemode
-
-
-
-
-
-def save(sus=None):
-	if sus != "sus":
-		with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
-			data = str([ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist])
-			data = base64.b64encode(data.encode("utf-8"))
-			data = str(data, "utf-8")
-			save.write(data)
-			save.close()
-		return
+def opensave():
 	with open(folderpath + "\\gamefiles\\save.txt", "r") as save:
 		data = save.read()
 		save.close()
@@ -155,15 +65,22 @@ def save(sus=None):
 		data = ast.literal_eval(data)
 	else: data = [0, 0, 0, 0, 0, "['ball']", "['bat']", "['field']", "[0]"]
 	return data
-	
-	
-	
+
+
+
+def save(list):
+	with open(folderpath + "\\gamefiles\\save.txt", "w") as save:
+		data = str([ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist])
+		data = base64.b64encode(data.encode("utf-8"))
+		data = str(data, "utf-8")
+		save.write(data)
+		save.close()
 	return
 
 
 
 ratelimit = False
-ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = save("sus")
+ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = opensave()
 
 balllist = ast.literal_eval(str(balllist))
 batlist = ast.literal_eval(str(batlist))
@@ -180,7 +97,7 @@ splashmessage = random.choice([
 								"Now on PS4!",
 								#"A line and a ball * and they dont even rotate!",
 								#"Better than real baseball!",
-								#weeks() + " weeks!",
+								weeks() + " weeks!",
 								"sponsored by Bayloadgs!",
 								#"June 7th 2022 ???",
 								"Why are you playing this?",
@@ -190,8 +107,7 @@ splashmessage = random.choice([
 								"What were YOU expecting?",
 								"ABK Stock " + ABK,
 								#"   ono my skirt *   -rick", # nah
-								"pls enjoy game",
-								#"how's ben?"
+								"pls enjoy game"
 								#""
 								#""
 							])
@@ -219,7 +135,6 @@ try:
 	response = requests.get("https://api.github.com/repos/wowbaseballgamesocool/baseballgame/releases")
 	latestversion = response.json()[0]["tag_name"].strip("v")
 	if latestversion == "1.2.1": raise Exception("Github returned wrong version")
-	elif latestversion == "1.3" and version != "1.3": raise Exception("Github returned wrong version")
 	with open(folderpath + "/gamefiles/cache.txt", "w") as file:
 		file.write(str(response.json())); file.close()
 except Exception as e:
@@ -307,7 +222,7 @@ jsonfile = json.loads(file)
 volume = int(jsonfile["settings"]["volume"])
 
 
-data = save("sus")
+data = opensave()
 
 
 balllistnumber = data[0]
@@ -334,9 +249,11 @@ black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
+dis_width = 600
+dis_height = 400
 
-
-
+pygame.init()
+screen = pygame.display.set_mode((dis_width, dis_height))
 releasenotescroll = 0
 #message = ""; startticks = 2; time = 0
 fpslist = []
@@ -345,13 +262,13 @@ splashsizemode, page, shoppage = 1, 1, 1
 fps, averagefps = 0, 0
 altaltsplashmessage = ""
 pygame.display.set_caption('Baseball Game')
+alreadyrendered = False
 
-
+# def refresh_sprites(): 
 
 ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 ball_sprite = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
-#menubg_sprite = pygame.image.load('gamefiles/assets/menubg.png').convert_alpha()
-
+menubg_sprite = pygame.image.load('gamefiles/assets/menubg.png').convert_alpha()
 out0_sprite = pygame.image.load('gamefiles/assets/outs/0outs.png').convert_alpha()
 out0_sprite = pygame.transform.scale(out0_sprite, (95, 30)) #size of text
 out1_sprite = pygame.image.load('gamefiles/assets/outs/1outs.png').convert_alpha()
@@ -360,21 +277,20 @@ out2_sprite = pygame.image.load('gamefiles/assets/outs/2outs.png').convert_alpha
 out2_sprite = pygame.transform.scale(out2_sprite, (95, 30)) #size of text
 out3_sprite = pygame.image.load('gamefiles/assets/outs/3outs.png').convert_alpha()
 out3_sprite = pygame.transform.scale(out3_sprite, (95, 30)) #size of text
-#optionsmenu_sprite = pygame.image.load('gamefiles/assets/optionsmenu.png').convert_alpha()
-
-#optionsmenustatsback_sprite = pygame.image.load('gamefiles/assets/optionsmenustatsback.png').convert_alpha()
-#assetsback_sprite = pygame.image.load('gamefiles/assets/assetsback.png').convert_alpha()
-#releasenotesbg = pygame.image.load('gamefiles/assets/releasenotesbg.png').convert_alpha()
-#battlepassboxpast = pygame.image.load('gamefiles/assets/battlepassboxpast.png').convert_alpha()
-#battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.png').convert_alpha()
-#battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
-#xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
-#bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
-#bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
-#bucksicon75 = pygame.image.load('gamefiles/assets/bucks75.png').convert_alpha()
-#right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
-#buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
-#buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
+optionsmenu_sprite = pygame.image.load('gamefiles/assets/optionsmenu.png').convert_alpha()
+assetsback_sprite = pygame.image.load('gamefiles/assets/assetsback.png').convert_alpha()
+back_sprite = pygame.image.load('gamefiles/assets/back.png').convert_alpha()
+releasenotesbg = pygame.image.load('gamefiles/assets/releasenotesbg.png').convert_alpha()
+battlepassboxpast = pygame.image.load('gamefiles/assets/battlepassboxpast.png').convert_alpha()
+battlepassboxpresent = pygame.image.load('gamefiles/assets/battlepassboxpresent.png').convert_alpha()
+battlepassboxfuture = pygame.image.load('gamefiles/assets/battlepassboxfuture.png').convert_alpha()
+xpicon = pygame.image.load('gamefiles/assets/xpicon.png').convert_alpha()
+bucksicon = pygame.image.load('gamefiles/assets/bucks.png').convert_alpha()
+bucksicon100 = pygame.image.load('gamefiles/assets/bucks100.png').convert_alpha()
+bucksicon75 = pygame.image.load('gamefiles/assets/bucks75.png').convert_alpha()
+right_arrow = pygame.image.load('gamefiles/assets/arrow.png').convert_alpha()
+buy1 = pygame.image.load('gamefiles/assets/buy1.png').convert_alpha()
+buy2 = pygame.image.load('gamefiles/assets/buy2.png').convert_alpha()
 left_arrow = pygame.transform.rotate(right_arrow, 180)
 field_sprite = pygame.image.load('gamefiles/assets/fields/' + fieldlist[fieldlistnumber] + '.png').convert_alpha()
 field_sprite = pygame.transform.scale(field_sprite, (620, 420)) #size of field
@@ -425,55 +341,47 @@ while True:
 		give("hockeybat", batlist, level, 12)
 		give("waterfield", fieldlist, level, 14)
 		give("roseball", balllist, level, 6)
-		bucks = givebucks(buckslist, level, 16, bucks, 100)
-		bucks = givebucks(buckslist, level, 11, bucks, 100)
-		bucks = givebucks(buckslist, level, 9, bucks, 75)
-		bucks = givebucks(buckslist, level, 8, bucks, 100)
+		if ITEM_SHOP_ENABLED:
+			bucks = givebucks(buckslist, level, 16, bucks, 100)
+			bucks = givebucks(buckslist, level, 11, bucks, 100)
+			bucks = givebucks(buckslist, level, 9, bucks, 75)
+			bucks = givebucks(buckslist, level, 8, bucks, 100)
 		save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 	except: pass
 	pygame.mouse.set_visible(True) 
 	pygame.display.set_caption('Baseball Game -- Menu')
+	mesg = ""
+	endtimer,outs = 0, 0
+	ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
+	ball_sprite = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
+	bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
+	bat_sprite = pygame.transform.scale(bat_sprite, (20, 70)) #size of bat old: 15, 70
+	asset = True
+	battlepass = True
+	optionsmenu = False
+	startderby = False
+	startplay = False
+	hit = False
+	firstswing = True
+	strikes, runs, runner, singles, doubles, homeruns, hit_type = 0, 0, 0, 0, 0, 0, 0
+	start = False
+	ballx = 265
+	bally = 100
+	batx = 260
+	baty = 310
 	while start == False:
 		
-		mesg = ""
-		endtimer,outs = 0, 0
-		ball_sprite = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
-		ball_sprite = pygame.transform.scale(ball_sprite, (40, 40)) #size of ball
-		bat_sprite = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
-		bat_sprite = pygame.transform.scale(bat_sprite, (20, 70)) #size of bat old: 15, 70
-		asset = True
-		battlepass = True
-		optionsmenu = False
-		startderby = False
-		startplay = False
-		hit = False
-		firstswing = True
-		if openreleasenotes == None: exit()
-		strikes, runs, runner, singles, doubles, homeruns, hit_type = 0, 0, 0, 0, 0, 0, 0
-		start = False
-		ballx = 265
-		bally = 100
-		batx = 260
-		baty = 310
+
 
 
 		screen.blit(menubg_sprite, (0, 0))
-		
-		
-		x, bouncemode = bounce(x, bouncemode)
-
-
 		#splashscreen
-
-		
-		
-
 		if openreleasenotes == False:
 			if "*" in splashmessage: altaltsplashmessage = splashmessage
 			if splashsize >= 32: splashsizemode = 0
 			if splashsize <= 25: splashsizemode = 1
-			if splashsizemode == 0: splashsize -= 0.85
-			if splashsizemode == 1: splashsize += 0.85
+			if splashsizemode == 0: splashsize -= 0.02
+			if splashsizemode == 1: splashsize += 0.02
 			splash_font = pygame.font.SysFont("Mochiy Pop One", int(round(splashsize, 0))) # 45
 			if "*" in altaltsplashmessage:
 				splashmessage, altsplashmessage = altaltsplashmessage.split("*")
@@ -500,10 +408,42 @@ while True:
 				screen.blit(releasenotesbg, [0, 0])
 				pushdownupdateinfo = 0
 				updatelinecount = 0
+				if not alreadyrendered:
+					try:
+						response = ast.literal_eval(response)
+					except: pass
+					for i in range(15):
+							try:
+								updatelinecount = 0
+								updatetitlething___ = response[i]["name"] + "  --  " + response[i]["tag_name"]
+								if str(response[i]["tag_name"]) == str(version): 
 
-				try:
-					response = ast.literal_eval(response)
-				except: pass
+									updatetitlething___ += "     [ Latest ]"
+
+								updateinfotitle = med_font.render(updatetitlething___, True, grey)
+								updateinfo = small_font.render(response[i]["body"], True, black)
+								if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
+									screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
+								if "\n" not in str(response[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+									screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
+									pushdownupdateinfo += 30
+								else:
+									
+										a = str(response[i]["body"])
+										b = r"\r\n"
+										try:
+											for b in a:
+												c = a.split("\r\n")
+												d = c[updatelinecount]
+												d = small_font.render(d, True, black)
+												if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+													screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
+												pushdownupdateinfo += 20
+												updatelinecount += 1
+										except: pass
+								pushdownupdateinfo += 55
+								alreadyrendered = True
+							except: pass
 				
 				
 				if openreleasenotes:
@@ -511,43 +451,14 @@ while True:
 					
 					
 					
-					for i in range(10):
-						try:
-							updatelinecount = 0
-							updatetitlething___ = response[i]["name"] + "  --  " + response[i]["tag_name"]
-							if str(response[i]["tag_name"]) == str(version): 
-
-								updatetitlething___ += "     [ Latest ]"
-
-							updateinfotitle = med_font.render(updatetitlething___, True, grey)
-							updateinfo = small_font.render(response[i]["body"], True, black)
-							if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
-								screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
-							if "\n" not in str(response[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-								screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
-								pushdownupdateinfo += 30
-							else:
-								
-									a = str(response[i]["body"])
-									b = r"\r\n"
-									try:
-										for b in a:
-											c = a.split("\r\n")
-											d = c[updatelinecount]
-											d = small_font.render(d, True, black)
-											if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-												screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
-											pushdownupdateinfo += 20
-											updatelinecount += 1
-									except: pass
-							pushdownupdateinfo += 55
-						except: pass
+					
 						for event in pygame.event.get():
-							if event.type == pygame.QUIT: openreleasenotes = None
+							if event.type == pygame.QUIT: exit()
 							if event.type == pygame.MOUSEBUTTONDOWN:
 								
 								
 								if event.button >= 4:
+									alreadyrendered = False
 									if ".0" in str(event.button / 2):
 										if releasenotescroll <= 50: releasenotescroll += 30
 									else:
@@ -599,14 +510,14 @@ while True:
 					start = True
 					optionsmenu = True
 				if derbyrect.collidepoint(event.pos):
-					pygame.mouse.set_visible(False)
+					
 					pygame.display.set_caption('Baseball Game -- Derby')
 					
 					start_ticks = pygame.time.get_ticks()
 					start = True
 					startderby = True
 				if playrect.collidepoint(event.pos):
-					pygame.mouse.set_visible(False)
+					
 					pygame.display.set_caption('Baseball Game -- Play')
 					start_ticks = pygame.time.get_ticks()
 					start = True
@@ -627,6 +538,8 @@ while True:
 
 
 		
+
+		pygame.mouse.set_visible(False) #########
 		screen.blit(field_sprite, (0, 0))
 		
 		screen.blit(space2swing, [dis_width / 6 + 260, dis_height / 3 + 250])
@@ -653,6 +566,7 @@ while True:
 				xp += math.floor(int(doubles) * doublesscoring)
 				xp += math.floor(int(homeruns) * homerunsscoring)
 				xp += forplayingscoring
+				if ITEM_SHOP_ENABLED: bucks += math.floor(int(homeruns) * homerunsbucks)
 				save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 				outs = 0
 				startplay = False
@@ -714,10 +628,11 @@ while True:
 				
 				homeruns += 1
 				runs += 1
+				mesg = "Home Run!"
 				if runner != 0:
 					runner = 0
 					runs += 1
-					mesg = "Home Run!"
+					
 				
 					
 				
@@ -924,6 +839,7 @@ while True:
 
 				xp += math.floor(int(homeruns) * derbyhomerunsscoring)
 				xp += forplayingscoring
+				if ITEM_SHOP_ENABLED: bucks += math.floor(int(homeruns) * homerunsbucks)
 				save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
 
 			timertext = font_style.render("60.00", True, black)
@@ -1049,8 +965,11 @@ while True:
 				
 				fpslist.append(fps)
 				fps = 0
-
+			if event.type == updateevent: 
+				pygame.mouse.set_visible(False)
+				#pygame.display.set_caption('Baseball Game  -- Derby   ' + str(seconds) + "   " + str(homeruns) + " hrs")
 			if event.type == pygame.QUIT:
+				
 				exit()
 						
 			if event.type == pygame.KEYDOWN:
@@ -1122,12 +1041,12 @@ while True:
 				if shoprect.collidepoint(event.pos): shopback = False; screen.fill(white)
 				if battlepassrect.collidepoint(event.pos): 
 					battlepass = False
-					data = save("sus")
+					data = opensave()
 					xp = data[3]
 					
 				if assetrect.collidepoint(event.pos): 
 					asset = False
-					ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = save("sus")
+					ball, bat, field, xp, bucks, balllist, batlist, fieldlist, buckslist = opensave()
 
 					balllist = ast.literal_eval(str(balllist))
 					batlist = ast.literal_eval(str(batlist))
@@ -1143,7 +1062,7 @@ while True:
 		pygame.display.update()
 
 		while statsback == False:
-			screen.blit(optionsmenustatsback_sprite, (0, 0))
+			screen.blit(back_sprite, (0, 0))
 			try:
 				with open(folderpath + "\\gamefiles\\hplay.json", "r") as hjson:
 					file = hjson.read()
@@ -1200,11 +1119,11 @@ while True:
 					
 					
 			pygame.display.update()
-			
 				
 		while asset == False:
 			
 			screen.fill(white)
+
 			screen.blit(right_arrow, [375, 25])
 			screen.blit(left_arrow, [100, 25])
 			
@@ -1216,7 +1135,12 @@ while True:
 			
 			
 			
-
+			screen.blit(pygame.transform.scale(ball_display, (80, 80)), [240, 20])
+			screen.blit(pygame.transform.scale(bat_display, (40, 140)), [260, 125])
+			
+			screen.blit(pygame.transform.scale(field_display, (150, 105)), [210, 275])
+			
+			screen.blit(assetsback_sprite, [0, 0])
 			
 			
 			rightballrect = pygame.Rect(375, 25, 100, 100)
@@ -1233,10 +1157,6 @@ while True:
 			for event in pygame.event.get():
 
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					screen.blit(pygame.transform.scale(ball_display, (80, 80)), [240, 20])
-					screen.blit(pygame.transform.scale(bat_display, (40, 140)), [260, 125])
-					screen.blit(pygame.transform.scale(field_display, (150, 105)), [210, 275])
-					screen.blit(assetsback_sprite, [0, 0])
 				
 					if leftballrect.collidepoint(event.pos):
 						
@@ -1267,11 +1187,14 @@ while True:
 					
 					
 					
-					if balllistnumber > len(balllist) - 1: balllistnumber = 0
+					if balllistnumber > len(balllist) - 1:
+						balllistnumber = 0
 					if batlistnumber < 0: balllistnumber = len(balllist) - 1
-					if batlistnumber > len(batlist) - 1: batlistnumber = 0
+					if batlistnumber > len(batlist) - 1:
+						batlistnumber = 0
 					if batlistnumber < 0: batlistnumber = len(batlist) - 1
-					if fieldlistnumber > len(fieldlist) - 1: fieldlistnumber = 0
+					if fieldlistnumber > len(fieldlist) - 1:
+						fieldlistnumber = 0
 					if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
 					
 					
@@ -1283,7 +1206,20 @@ while True:
 					ball_display = pygame.image.load('gamefiles/assets/balls/' + balllist[balllistnumber] + '.png').convert_alpha()
 					bat_display = pygame.image.load('gamefiles/assets/bats/' + batlist[batlistnumber] + '.png').convert_alpha()
 
+					
 
+					if balllistnumber > len(balllist) - 1:
+						balllistnumber = 0
+					if batlistnumber < 0: balllistnumber = len(balllist) - 1
+					if batlistnumber > len(batlist) - 1:
+						batlistnumber = 0
+					if batlistnumber < 0: batlistnumber = len(batlist) - 1
+					if fieldlistnumber > len(fieldlist) - 1:
+						fieldlistnumber = 0
+					if fieldlistnumber < 0: fieldlistnumber = len(fieldlist) - 1
+
+
+					data = opensave()
 					
 
 					
@@ -1308,10 +1244,10 @@ while True:
 			pygame.display.update()
 
 	
-		while shopback == False:
+		while shopback == False and ITEM_SHOP_ENABLED:
 			
 			#save([balllistnumber, batlistnumber, fieldlistnumber, xp, bucks, balllist, batlist, fieldlist, buckslist])
-			screen.blit(optionsmenustatsback_sprite, (-50, 50))
+			screen.blit(back_sprite, (-50, 50))
 			if shoppage < 3:
 				screen.blit(right_arrow, [500, 300])
 			if shoppage != 1:
@@ -1324,7 +1260,7 @@ while True:
 			oddbuyrect = pygame.Rect(80 + 1 * 250, 210, 167, 65)
 
 			screen.blit(bucksicon, (150, 320))
-			bucks_text = splash_font.render(str(save("sus")[4]), True, yellow)
+			bucks_text = splash_font.render(str(opensave()[4]), True, yellow)
 			screen.blit(bucks_text, [175, 360])
 			for i in range(2):
 
@@ -1335,39 +1271,36 @@ while True:
 				#if random.randint(1, 2) == 1:
 					#pygame.draw.rect(screen,red,(buyrect))
 
-								# copilot autofilled the text for you :)
-				# TODO: dont run save() every time you draw the shop screen (it's slow) - only run it when you buy something or when you change pages or when you change the shop page (so you don't have to run it every time you change the shop page)
-
 				if a == 0:
 					smileball = pygame.image.load('gamefiles/assets/balls/smileball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(smileball, (125, 120)), [105 + i * 250, 43])
 					screen.blit(bucksicon100, [135 + i * 250, 130])
-					if "smileball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "smileball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 1:
 					baseballball = pygame.image.load('gamefiles/assets/balls/baseballball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(baseballball, (125, 120)), [105 + i * 250, 43])
-					if "baseballball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "baseballball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 2:
 					axebat = pygame.image.load('gamefiles/assets/bats/axebat.png').convert_alpha()
 					screen.blit(pygame.transform.scale(axebat, (45, 120)), [140 + i * 250, 43])
-					if "axebat" not in save("sus")[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "axebat" not in opensave()[6]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 3:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 5:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 				if a == 6:
 					roseball = pygame.image.load('gamefiles/assets/balls/roseball.png').convert_alpha()
 					screen.blit(pygame.transform.scale(roseball, (125, 120)), [105 + i * 250, 43])
-					if "roseball" not in save("sus")[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
+					if "roseball" not in opensave()[5]: screen.blit(pygame.transform.scale(buy1, (167, 65)), [80 + i * 250, 210])
 					else: screen.blit(pygame.transform.scale(buy2, (167, 65)), [80 + i * 250, 210])
 
 			for event in pygame.event.get():
@@ -1399,7 +1332,7 @@ while True:
 		#xp = 0
 		while battlepass == False:
 			screen.fill(white)
-			screen.blit(optionsmenustatsback_sprite, (-50, 50))
+			screen.blit(back_sprite, (-50, 50))
 			
 			for i in range(1,5):
 

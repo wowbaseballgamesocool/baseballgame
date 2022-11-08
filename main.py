@@ -1,7 +1,9 @@
 import pygame, random, os, json, requests, urllib, shutil, ast, math, base64, datetime
 # TODO:
+# Create 4 new sprites for item shop
+# fix release notes
 # fix home run not showing in play (fixed)
-# add new hit display to derby
+# add new hit display to derby (done)
 # add buck collection after games (done)
 
 folderpath = os.getcwd()
@@ -23,7 +25,6 @@ def weeks():
 	year, week, day = datetime.date.today().isocalendar(); week += 4
 	for i in range(year - 2022): week += 52
 	for i in range(day - 6): week += 1
-
 	for i in range(year - 2022): week += math.floor((365 / 7 - 52) * (round(year - 2020, 0) / 4))
 	return str(week).replace(".0", "")
 
@@ -95,19 +96,11 @@ else: ABK = "-" + str(round(random.uniform(2.34, 0.16), 2)) + "%"
 splashmessage = random.choice([
 								#"Battle Pass soon!",
 								"Now on PS4!",
-								#"A line and a ball * and they dont even rotate!",
 								#"Better than real baseball!",
 								weeks() + " weeks!",
 								"sponsored by Bayloadgs!",
-								#"June 7th 2022 ???",
 								"Why are you playing this?",
-								#"sponsored by * the inability to spell gmae!",
-								#"Jones."
-								#"Switch Port?" # the 'rt?' part looks funny
-								"What were YOU expecting?",
 								"ABK Stock " + ABK,
-								#"   ono my skirt *   -rick", # nah
-								"pls enjoy game"
 								#""
 								#""
 							])
@@ -152,7 +145,6 @@ if internet == True:
 	if str(version) != str(latestversion):
 		from time import sleep
 		print("\nNew update   " + str(version) + " -> " + str(latestversion))
-		#print("Restart game if download takes too long")
 		sleep(1.5)
 		print("downloading update...")
 		
@@ -398,76 +390,79 @@ while True:
 			screen.blit(splash_text, [320, 45])
 
 
-		
-		if openreleasenotes:
+		# print(alreadyrendered)
+		elif openreleasenotes:
 			
 			
 			
 			if internet or response != "":
-				screen.blit(releasenotesbg, [0, 0])
-				screen.blit(releasenotesbg, [0, 0])
+				
 				pushdownupdateinfo = 0
 				updatelinecount = 0
-				if not alreadyrendered:
+				screen.blit(releasenotesbg, [0, 0])
+				screen.blit(releasenotesbg, [0, 0])
+				# if True:
+					
+				try:
+					response = ast.literal_eval(response)
+				except: pass
+				
+				for i in range(15):
 					try:
-						response = ast.literal_eval(response)
+						updatelinecount = 0
+						updatetitlething___ = response[i]["name"] + "  --  " + response[i]["tag_name"]
+						if str(response[i]["tag_name"]) == str(version): 
+
+							updatetitlething___ += "     [ Latest ]"
+
+						updateinfotitle = med_font.render(updatetitlething___, True, grey)
+						updateinfo = small_font.render(response[i]["body"], True, black)
+						if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
+							screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
+						if "\n" not in str(response[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+							screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
+							pushdownupdateinfo += 30
+						else:
+							
+								a = str(response[i]["body"])
+								b = r"\r\n"
+								try:
+									for b in a:
+										c = a.split("\r\n")
+										d = c[updatelinecount]
+										d = small_font.render(d, True, black)
+										if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
+											screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
+										pushdownupdateinfo += 20
+										updatelinecount += 1
+								except: pass
+						pushdownupdateinfo += 55
+						# alreadyrendered = True
 					except: pass
-					for i in range(15):
-							try:
-								updatelinecount = 0
-								updatetitlething___ = response[i]["name"] + "  --  " + response[i]["tag_name"]
-								if str(response[i]["tag_name"]) == str(version): 
+					pygame.display.update()
 
-									updatetitlething___ += "     [ Latest ]"
-
-								updateinfotitle = med_font.render(updatetitlething___, True, grey)
-								updateinfo = small_font.render(response[i]["body"], True, black)
-								if dis_height - 330 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 330 + pushdownupdateinfo + releasenotescroll > 30:
-									screen.blit(updateinfotitle, [dis_width - 520, dis_height - 330 + pushdownupdateinfo + releasenotescroll])
-								if "\n" not in str(response[i]["body"]) and dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-									screen.blit(updateinfo, [dis_width / 2 - 250, dis_height - 300 + pushdownupdateinfo + releasenotescroll])
-									pushdownupdateinfo += 30
-								else:
-									
-										a = str(response[i]["body"])
-										b = r"\r\n"
-										try:
-											for b in a:
-												c = a.split("\r\n")
-												d = c[updatelinecount]
-												d = small_font.render(d, True, black)
-												if dis_height - 300 + pushdownupdateinfo + releasenotescroll < 335 and dis_height - 300 + pushdownupdateinfo + releasenotescroll > 30:
-													screen.blit(d, [dis_width / 2 - 250, dis_height - 290 + pushdownupdateinfo + releasenotescroll])
-												pushdownupdateinfo += 20
-												updatelinecount += 1
-										except: pass
-								pushdownupdateinfo += 55
-								alreadyrendered = True
-							except: pass
+			
 				
+			if openreleasenotes:
 				
-				if openreleasenotes:
-					
-					
-					
-					
-					
-						for event in pygame.event.get():
-							if event.type == pygame.QUIT: exit()
-							if event.type == pygame.MOUSEBUTTONDOWN:
-								
-								
-								if event.button >= 4:
-									alreadyrendered = False
-									if ".0" in str(event.button / 2):
-										if releasenotescroll <= 50: releasenotescroll += 30
-									else:
-										if releasenotescroll >= -950: releasenotescroll -= 30
-								else: openreleasenotes = False
-							if event.type == pygame.KEYDOWN:
-								openreleasenotes = False
-						pygame.display.update()
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT: exit()
+					if event.type == pygame.MOUSEBUTTONDOWN:
 						
+						
+						if event.button >= 4:
+							alreadyrendered = False
+							if ".0" in str(event.button / 2):
+								if releasenotescroll <= 50: releasenotescroll += 30
+							else:
+								if releasenotescroll >= -950: releasenotescroll -= 30
+						else: openreleasenotes = False; alreadyrendered = False
+					if event.type == pygame.KEYDOWN:
+						openreleasenotes = False
+						alreadyrendered = False
+
+				pygame.display.update()
+					
 
 					
 					
@@ -476,7 +471,6 @@ while True:
 			else:	# might have to move this error text if stats/settings were to go here
 				updateinfo = small_font.render("Try again later", True, black)
 				screen.blit(updateinfo, [20, dis_height - 110])
-
 
 
 
@@ -491,12 +485,12 @@ while True:
 
 
 
-		#if random.randint(1, 2) == 1:
-			#pygame.draw.rect(screen,red,(playrect))
-			#pygame.draw.rect(screen,red,(derbyrect))
-			#pygame.draw.rect(screen,red,(optionsrect))
-			#pygame.draw.rect(screen,red,(exitrect))
-			#pygame.draw.rect(screen,red,(releaserect))
+		# if random.randint(1, 2) == 1:
+			# pygame.draw.rect(screen,red,(playrect))
+			# pygame.draw.rect(screen,red,(derbyrect))
+			# pygame.draw.rect(screen,red,(optionsrect))
+			# pygame.draw.rect(screen,red,(exitrect))
+			# pygame.draw.rect(screen,red,(releaserect))
 		
 		for event in pygame.event.get():
 
@@ -818,7 +812,7 @@ while True:
 		while float(homeruns) > 350:
 			homeruns -= 350
 		
-		
+		if homeruns: message_to_screen("Home Run!", (0, 0, 0), "ignore", 5, 340)
 		#homeruntext = med_font.render("HomeRuns : " + str(homeruns), True, black)
 		#screen.blit(homeruntext, [dis_width - 600, dis_height - 400])
 		#besthomeruntext = med_font.render("Best : " + str(highderbyhomeruns), True, black)
@@ -902,9 +896,6 @@ while True:
 						
 						homeruns = int(homeruns) + 1
 						
-				
-						mesg = font_style.render("Home Run!", True, red)
-						screen.blit(mesg, [dis_width / 6, dis_height / 3])
 			if hit_type == 2:
 
 				bally -= 0.09
